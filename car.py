@@ -1,8 +1,6 @@
 #!/usr/bin/python
 
-
 import sys, select, tty, termios, bluetooth, time
-
 from evdev import InputDevice, categorize, ecodes
 
 
@@ -20,23 +18,18 @@ def movement(dir, speed):
 	print "shit"
 
 
-def stop():
-	
-	print"gah"	
-	
+def stop(sock):
+	sock.send('\x00')
+	sock.close()
+	print 'Stopping Car...'
 	
 if __name__ == '__main__':
-
-
-
 
 	dev = InputDevice('/dev/input/event0')
 	sock = connect("00:12:05:09:92:74",1)
 	
-		
 	for event in dev.read_loop():
 		if event.type == ecodes.EV_KEY:
-
 			key_pressed = str(categorize(event))
 			if 'KEY_W' in key_pressed:
 				sock.send('\x1F')
@@ -52,6 +45,4 @@ if __name__ == '__main__':
                                 time.sleep(0.035)
 			if '' in key_pressed:
 				sock.send('\x00')
-		
-
 
