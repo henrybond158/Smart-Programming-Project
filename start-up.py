@@ -5,13 +5,6 @@
 import sys, select, tty, termios, bluetooth, time
 from evdev import InputDevice, categorize, ecodes
 
-#=====> Starting point:
-
-if __name__ == '__main__':
-	keyboard()
-	print "[...] Program stopped [...]"
-
-
 #======> Car functions:
 
 sock = connect("00:12:05:09:92:74",1)
@@ -28,9 +21,6 @@ def movement(dirct, speed):
 
 def stop():
 	print"stop"
-
-
-
 
 #=====> Devices:
 
@@ -52,4 +42,13 @@ def keyboard():
 				movement('0','0')
 			if 'KEY_ESCAPE' in key_pressed:
 				break
-				
+	print '[...] Stoping Keyboard [...]'
+
+def controller():
+	print 'Controller'
+
+#=====> Starting point:
+
+if __name__ == '__main__':
+	keyboard()
+	print "[...] Program stopped [...]"
