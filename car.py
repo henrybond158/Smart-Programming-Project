@@ -15,7 +15,7 @@ def connect(bdr_addr, port):
 	
 def movement(dir, speed):
 
-	print "shit"
+	print "this is where the movement happens"
 
 
 def stop(sock):
