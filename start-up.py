@@ -3,11 +3,10 @@
 #=====> Libraries:
 
 import sys, select, tty, termios, bluetooth, time
-from evdev import InputDevice, categorize, ecodes
+from evdev import InputDevice, categorize, ecodes		# Device Input
+#from controller.lib import xbox_read				# Controller Lib
 
 #======> Car functions:
-
-sock = connect("00:12:05:09:92:74",1)
 
 def connect(bdr_addr, port):
 	sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
@@ -15,9 +14,10 @@ def connect(bdr_addr, port):
 	return sock
 
 def movement(dirct, speed):
-	sock.send('')
-	time.sleep(0.035)
-	print 'Move'
+	print str(bytes('0/' + dirct + speed))
+	sock.send(bytes(dirct + speed))
+	#time.sleep(0.035)
+	time.sleep(1)
 
 def stop():
 	print"stop"
@@ -38,17 +38,21 @@ def keyboard():
 				movement('5','F')
 			if 'KEY_D' in key_pressed:
 				movement('6','F')
-			if '' in key_pressed or 'KEY_SPACE' in key_pressed:
+			if 'KEY_SPACE' in key_pressed:
 				movement('0','0')
 			if 'KEY_ESCAPE' in key_pressed:
 				break
 	print '[...] Stoping Keyboard [...]'
 
-def controller():
-	print 'Controller'
+def controllerXbox():
+
+	for event in xbox_read.event_stream(deadzone=12000):
+		print event
 
 #=====> Starting point:
 
 if __name__ == '__main__':
+	sock = connect("00:12:05:09:94:45",1)
 	keyboard()
+	sock.close()
 	print "[...] Program stopped [...]"
