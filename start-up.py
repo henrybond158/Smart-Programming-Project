@@ -13,11 +13,8 @@ def connect(bdr_addr, port):
 	sock.connect((bdr_addr, port))
 	return sock
 
-def movement(dirct, speed):
-	print str(bytes('0/' + dirct + speed))
-	sock.send(bytes(dirct + speed))
-	#time.sleep(0.035)
-	time.sleep(1)
+def movement(stuff): sock.send(stuff)
+def movement2(drc, spd): sock.send(drc + spd)
 
 def stop():
 	print"stop"
@@ -29,19 +26,14 @@ def keyboard():
 
 	for event in dev.read_loop():
 		if event.type == ecodes.EV_KEY:
-			key_pressed = str(categorize(event))
-			if 'KEY_W' in key_pressed:
-				movement('1','F')
-			if 'KEY_S' in key_pressed:
-				movement('2','F')
-			if 'KEY_A' in key_pressed:
-				movement('5','F')
-			if 'KEY_D' in key_pressed:
-				movement('6','F')
-			if 'KEY_SPACE' in key_pressed:
-				movement('0','0')
-			if 'KEY_ESCAPE' in key_pressed:
-				break
+			key = categorize(event)
+			if 'KEY_W' in str(key) and key.keystate == key.key_down: movement2('1','F')
+			elif 'KEY_S' in str(key) and key.keystate == key.key_down: movement('\x2F')
+			elif 'KEY_A' in str(key) and key.keystate == key.key_down: movement('\x5F')
+			elif 'KEY_D' in str(key) and key.keystate == key.key_down: movement('\x6F')
+			elif 'KEY_C' in str(key): break
+			elif key.key_down == key.key_up: movement('\x00')
+			else: movement('\x00')
 	print '[...] Stoping Keyboard [...]'
 
 def controllerXbox():
@@ -53,6 +45,7 @@ def controllerXbox():
 
 if __name__ == '__main__':
 	sock = connect("00:12:05:09:94:45",1)
+
 	keyboard()
 	sock.close()
 	print "[...] Program stopped [...]"
