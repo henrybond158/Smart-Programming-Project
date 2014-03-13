@@ -35,7 +35,7 @@ while True:
 		subprocess.call(["python", "start-up.py", "macFile"])
 	elif mode == 3:
 		print('calling the gui control program')
-		#gui stuff here
+		subprocess.call(["python", "guiPI.py"])
 	elif mode == 4:
 		print('calling the gamepad control function')
 		#game pad stuff
