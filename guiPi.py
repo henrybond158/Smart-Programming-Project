@@ -1,95 +1,68 @@
-#!/usr/bin/env python
-
-# example togglebutton.py
-
+#!/usr/bin/python
 import pygtk
 pygtk.require('2.0')
 import gtk
 
-class ToggleButton:
-  # Our callback.
-  # The data passed to this method is printed to stdout
-  def callback(self, widget, data=None):
-      print "%s was toggled %s" % (data, ("OFF", "ON")[widget.get_active()])
-
-  # This callback quits the program
-  def delete_event(self, widget, event, data=None):
-      gtk.main_quit()
-      return False
+class Base:
+  def destroy(self, widget, data=None):
+    print('you closed the window')
+    gtk.main_quit()
+  def forward(self, widget, data=None):
+    print('you click the forward button')
+  def backwards(self, widget, data=None):
+    print('you clicked the back button')
+  def left(self, widget, data=None):
+    print('you clicked the left button')
+  def right(self, widget, data=None):
+    print('you clicked the right button')
+  def cruise(self, widget, data=None):
+    print("you be crusing")
 
   def __init__(self):
-      # Create a new window
-      self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
+    self.window.set_position(gtk.WIN_POS_CENTER)
+    self.window.set_size_request(150,150)
+    fixed = gtk.Fixed()
+    #button left
+    self.button1 = gtk.Button("Left")
+    self.button1.connect("clicked", self.left)
 
-      # Set the window title
-      self.window.set_title("Toggle Button")
+    
+  
+    fixed.put(self.button1, 20, 50)
 
-      # Set a handler for delete_event that immediately
-      # exits GTK.
-      self.window.connect("delete_event", self.delete_event)
+    #button cruise
+    self.button2 = gtk.Button("Cruise")
+    self.button2.connect("clicked", self.cruise)
 
-      # Sets the border width of the window.
-      self.window.set_border_width(100)
+    fixed.put(self.button2, 55, 50)
+    #button forward
+    self.button3 = gtk.Button("Forward")
+    self.button3.connect("clicked", self.forward)
 
-      # Create a vertical box
-      vbox = gtk.VBox(True, 2)
+    fixed.put(self.button3, 50, 20)
 
-      # Put the vbox in the main window
-      self.window.add(vbox)
+    #button right
+    self.button4 = gtk.Button("Right")
+    self.button4.connect("clicked", self.right)
 
-      # Create first button
-      button = gtk.ToggleButton("Forward")
+  
+    fixed.put(self.button4, 100, 50)
+    #button backwards
+    self.button5 = gtk.Button("Backwards")
+    self.button5.connect("clicked", self.backwards)
 
-      # When the button is toggled, we call the "callback" method
-      # with a pointer to "button" as its argument
-      button.connect("toggled", self.callback, "Forward")
+    fixed.put(self.button5, 50, 80)
 
 
-      # Insert button 1
-      vbox.pack_start(button, True, True, 2)
 
-      button.show()
+    self.window.add(fixed)
+    self.window.show_all()
+    self.window.connect("destroy",self.destroy)
 
-      # Create second button
-
-      button = gtk.ToggleButton("Backwards")
-
-      # When the button is toggled, we call the "callback" method
-      # with a pointer to "button 2" as its argument
-      button.connect("toggled", self.callback, "Backwards")
-      # Insert button 2
-      vbox.pack_start(button, True, True, 2)
-
-      button.show()
-
-      button = gtk.ToggleButton("Left")
-
-      # When the button is toggled, we call the "callback" method
-      # with a pointer to "button 2" as its argument
-      button.connect("toggled", self.callback, "Left")
-      # Insert button 2
-      vbox.pack_start(button, True, True, 2)
-
-      button.show()
-
-      # Create "Quit" button
-      button = gtk.Button("Quit")
-
-      # When the button is clicked, we call the main_quit function
-      # and the program exits
-      button.connect("clicked", lambda wid: gtk.main_quit())
-
-      # Insert the quit button
-      vbox.pack_start(button, True, True, 2)
-
-      button.show()
-      vbox.show()
-      self.window.show()
-
-def main():
-  gtk.main()
-  return 0       
+  def main(self):
+    gtk.main()
 
 if __name__ == "__main__":
-  ToggleButton()
-  main()
+  base = Base()
+  base.main()
