@@ -4,7 +4,7 @@
 
 import sys, select, tty, termios, bluetooth, time
 from evdev import InputDevice, categorize, ecodes		# Device Input
-#from controller.lib import xbox_read				# Controller Lib
+from controller.lib import xbox_read				# Controller Lib
 
 #======> Car functions:
 
@@ -35,11 +35,17 @@ def keyboard():
 			if key.keystate == key.key_up: movement('\x00')
 			if 'KEY_ESC' in str(key): break
 	print '[...] Stoping Keyboard [...]'
-
 def controllerXbox():
-
 	for event in xbox_read.event_stream(deadzone=12000):
-		print event
+		if event.key == 'A' and event.value == 1: movement('\x1A')
+		if event.key == 'X' and event.value == 1: movement('\x2A')
+		if event.key == 'dl' and event.value == 1: movement('\x5A')
+		if event.key == 'dr' and event.value == 1: movement('\x6A')
+
+		if event.value == 0: movement('\x00')
+		if event.key == 'guide': break
+def controllerPs3():
+	print 'Ps3'
 
 #=====> Starting point:
 

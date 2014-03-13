@@ -1,8 +1,0 @@
-
-
-echo "Controllers..."
-
-# Link: mattdyson.org/blog/2013/01/using-an-xbox-360-wireless-controller-with-raspberry-pi/
-
-sudo apt-get install xboxdrv
-git clone https://github.com/zephod/lego-pi.git legopi
