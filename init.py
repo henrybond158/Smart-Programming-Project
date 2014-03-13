@@ -1,14 +1,24 @@
 #!/usr/bin/python
 
 
+def macAddressChanging():
+	try:
+		mac = raw_input('Please enter new mac address\n')
+		f = open('macFile','w')
+		f.write(mac)
+		f.close
+	except:
+		print('something went wrong')
+
+
 print('welcome to our rasbpi car controller program, please select your option')
 print('1: Enter Mac address of car')
 print('2: keyboard control of car')
 print('3: GUI controller')
 print('4: gamepad controller')
-raw_input('Enter Your Choice')
+
 try:
-	mode = int(raw_input('enter your choice:'))
+	mode = int(raw_input('Enter Your Choice: \n'))
 except ValueError:
 	print "not a number"
 
@@ -25,13 +35,3 @@ elif mode == 4:
 	print('calling the gamepad control function')
 	#game pad stuff
 
-
-
-def macAddressChanging():
-	try:
-		mac = raw_input('Please enter new mac address')
-		f = open('macFile','w')
-		f.write(mac)
-		f.close
-	except:
-		print('something went wrong')
