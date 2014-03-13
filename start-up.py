@@ -27,13 +27,15 @@ def keyboard():
 	for event in dev.read_loop():
 		if event.type == ecodes.EV_KEY:
 			key = categorize(event)
-			if 'KEY_W' in str(key) and key.keystate == key.key_down: movement2('1','F')
-			elif 'KEY_S' in str(key) and key.keystate == key.key_down: movement('\x2F')
-			elif 'KEY_A' in str(key) and key.keystate == key.key_down: movement('\x5F')
-			elif 'KEY_D' in str(key) and key.keystate == key.key_down: movement('\x6F')
-			elif 'KEY_C' in str(key): break
-			elif key.key_down == key.key_up: movement('\x00')
-			else: movement('\x00')
+			  if 'KEY_W' in str(key) and (key.keystate == key.key_down or key.keystate == key.key_hold): movement('\x1F')
+			elif 'KEY_S' in str(key) and (key.keystate == key.key_down or key.keystate == key.key_hold): movement('\x2F')
+			elif 'KEY_A' in str(key) and (key.keystate == key.key_down or key.keystate == key.key_hold): movement('\x3F')
+			elif 'KEY_D' in str(key) and (key.keystate == key.key_down or key.keystate == key.key_hold): movement('\x4F')
+			elif 'KEY_Q' in str(key) and (key.keystate == key.key_down or key.keystate == key.key_hold): movement('\x5F')
+			elif 'KEY_E' in str(key) and (key.keystate == key.key_down or key.keystate == key.key_hold): movement('\x6F')
+			
+			if key.keystate == key.key_up: movement('\x00')
+			if 'KEY_ESC' in str(key): break
 	print '[...] Stoping Keyboard [...]'
 
 def controllerXbox():
@@ -44,7 +46,7 @@ def controllerXbox():
 #=====> Starting point:
 
 if __name__ == '__main__':
-	sock = connect("00:12:05:09:94:45",1)
+	sock = connect("00:12:05:09:94:45",1)w
 
 	keyboard()
 	sock.close()
