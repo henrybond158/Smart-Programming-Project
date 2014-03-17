@@ -1,0 +1,7 @@
+1) Create UML Diagram & Flow Diagram
+2) Find out which packages are required - python, gtk, bluetooth dependancies 
+3) Start Creating Connection Code
+4) Create template GUI program
+5) decipher input from gamepad controllers & steering wheel
+6) map periphal & gui input to code that interfaces with the car
+7) fulfill non-functional requirements.
