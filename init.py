@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-import subprocess
+import subprocess, os
 
 def menu():
     print('welcome to our rasbpi car controller program, please select your option')
@@ -47,14 +47,9 @@ def macAddressChanging():
     except:
         print('something went wrong')
 
-def getMacFromFile():
-    """ 
-    Gets MAC addr from file and loads it, 
-    if file not existant or there is no MAC address in the file,
-    notifies user to enter MAC address  
-    > or not, I might just delete this method
-    """
-    return
+def macFileExists():
+    if os.path.exists("macFile.txt"):return True
+    return False
 
 while True:
     menu()
@@ -67,8 +62,12 @@ while True:
         print('calling the mac address change function')
         macAddressChanging()
     elif mode == 2:
-        print('calling the keyboard control function')
-        subprocess.call(["python", "start-up.py", macAddr])
+        if macFileExists():
+            print('calling the keyboard control function')
+            subprocess.call(["python", "start-up.py", macAddr])
+        else:
+            print("Please, enter a MAC address as there is none predefined")
+            macAddressChanging()
     elif mode == 3:
         print('calling the gui control program')
         subprocess.call(["python", "guiPI.py"])
