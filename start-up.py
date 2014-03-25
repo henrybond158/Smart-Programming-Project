@@ -14,8 +14,8 @@ def connect(bdr_addr, port):
     return sock
 
 def movement(stuff): sock.send(stuff)
-
-def stop(): print"stop"
+def movement2(dir,spd):
+	print dir + " >< " + spd	
 
 #=====> Devices:
 
@@ -45,20 +45,22 @@ def controllerXbox():
         if event.value == 0: movement('\x00')
         if event.key == 'guide': break
 def controllerPs3():
-    print 'Ps3'
+	for event in xbox_read.event_stream(deadzone=12000):
+		print event
 
 #=====> Starting point:
 
 if __name__ == '__main__':
-    try:
-        with open("macFile.txt","r+") as macFile:
-            macaddr = macFile.readline().rstrip("\n")
-            # TODO: go through all theMACs if it fails to connect
-    except IOError: #should be unecesary cause "r+" should create a file if it doesn't exist
-        print "The MAC file does not seem to exist."
+	try:
+		with open("macFile.txt","r+") as macFile:
+			macaddr=macFile.readline().rstrip("\n")
+			print macaddr
+		# TODO: go through all theMACs if it fails to connect
+	except IOError: #should be unecesary cause "r+" should create a file if it doesn't exist
+		print "The MAC file does not seem to exist."
 
     sock = connect(macaddr,1)
 
-    keyboard()
+    controllerPs3()
     sock.close()
     print "[...] Program stopped [...]"

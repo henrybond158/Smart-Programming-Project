@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import subprocess, os
+import re
 
 def menu():
     print('welcome to our rasbpi car controller program, please select your option')
@@ -11,23 +12,30 @@ def menu():
 
 def checkMac(mac):
     # HAving 99 problems? Let's add RegEx to them to round 'em up nicely
-    mac = re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", x.lower())
-    if mac == true:
+    print ("running checkMac function")
+    isMac = re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mac.lower())
+    print("Regular expressions running")
+    if isMac != None:
         mac = mac.replace("-",":")
         # if it was a Windows user, replace all the - with : for usability
         print("All good")
-        return true
-    return false
+        return True
+    print("not a mac")
+    return False
 
 
 def macAddressChanging():
     try:
+	isInFile = False
         mac = raw_input('Please enter new mac address\n XX:XX:XX:XX:XX:XX\n')
-        if checkMac: #if true
+        if checkMac(mac): #if true
+	    print("in if statement, MAC was okay")
             try:    #try to open a file, if not, quit
-                with open("macFile.txt","r+") as macFile:
+                with open("macFile.txt","r+") as macFile: # or w+? 
+		    print("Mac file open")
                     for fileMac in macFile:
-                        if mac == fileMac:
+			print fileMac + "<>" + mac
+                        if mac == fileMac.rstrip("\n"):
                             isInFile = True
                             break
                     if isInFile == False:
@@ -44,8 +52,8 @@ def macAddressChanging():
         else:
             print("MAC Address is wrong, mate")
 
-    except:
-        print('something went wrong')
+    except Exception as detail:
+        print('something went wrong', detail)
 
 def macFileExists():
     if os.path.exists("macFile.txt"):return True
@@ -64,7 +72,7 @@ while True:
     elif mode == 2:
         if macFileExists():
             print('calling the keyboard control function')
-            subprocess.call(["python", "start-up.py", macAddr])
+            subprocess.call(["python", "start-up.py"])
         else:
             print("Please, enter a MAC address as there is none predefined")
             macAddressChanging()
