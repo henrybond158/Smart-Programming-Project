@@ -9,12 +9,18 @@ from lib import xbox_read                				# Controller Lib
 #======> Car functions:
 
 def connect(bdr_addr, port):
+<<<<<<< HEAD
 	try:
 	    sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 	    sock.connect((bdr_addr, port))
 	    return sock
 	except:
 		return ''
+=======
+    sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+    sock.connect((bdr_addr,port))
+    return sock
+>>>>>>> 02ddcf7e0ca103e5852f0e458b106b71bd69816d
 
 def move(dir, spd):
 	if (dir < 15) or (spd < 15):
