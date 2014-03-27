@@ -21,7 +21,7 @@ class Base:
   def __init__(self):
     self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
     self.window.set_position(gtk.WIN_POS_CENTER)
-    self.window.set_size_request(150,150)
+    self.window.set_size_request(500,300)
     fixed = gtk.Fixed()
     #button left
     self.button1 = gtk.Button("Left")

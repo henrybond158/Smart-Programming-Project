@@ -10,7 +10,7 @@ from controller.lib import xbox_read                # Controller Lib
 
 def connect(bdr_addr, port):
     sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-    sock.connect((bdr_addr, port))
+    sock.connect((bdr_addr,port))
     return sock
 
 def movement(stuff): sock.send(stuff)

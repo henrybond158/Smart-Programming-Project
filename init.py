@@ -31,7 +31,7 @@ def macAddressChanging():
         if checkMac(mac): #if true
 	    print("in if statement, MAC was okay")
             try:    #try to open a file, if not, quit
-                with open("macFile.txt","r+") as macFile: # or w+? 
+                with open("macFile.txt","w+") as macFile: # or w+? 
 		    print("Mac file open")
                     for fileMac in macFile:
 			print fileMac + "<>" + mac
@@ -62,7 +62,7 @@ def macFileExists():
 while True:
     menu()
     try:
-        mode = int(raw_input('Enter Your Choice: '))
+	mode = int(raw_input('Enter Your Choice: '))
     except ValueError:
         print "not a number"
 
