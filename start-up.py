@@ -29,23 +29,28 @@ def move(dir, spd):
 #=====> Devices:
 
 def keyboard():
-    dev = InputDevice('/dev/input/event0')
+	try:
+	    dev = InputDevice('/dev/input/event0')
 
-    for event in dev.read_loop():
-        if event.type == ecodes.EV_KEY:
-            key = categorize(event)
+	    for event in dev.read_loop():
+	        if event.type == ecodes.EV_KEY:
+	            key = categorize(event)
 
-            if 'KEY_W' in str(key) and (key.keystate == key.key_down): move(1,15)
-            if 'KEY_S' in str(key) and (key.keystate == key.key_down): move(2,15)
-            if 'KEY_A' in str(key) and (key.keystate == key.key_down): move(3,15)
-            if 'KEY_D' in str(key) and (key.keystate == key.key_down): move(4,15)
-            if 'KEY_Q' in str(key) and (key.keystate == key.key_down): move(5,15)
-            if 'KEY_E' in str(key) and (key.keystate == key.key_down): move(6,15)
+	            if 'KEY_W' in str(key) and (key.keystate == key.key_down): move(1,15)
+	            if 'KEY_S' in str(key) and (key.keystate == key.key_down): move(2,15)
+	            if 'KEY_A' in str(key) and (key.keystate == key.key_down): move(3,15)
+	            if 'KEY_D' in str(key) and (key.keystate == key.key_down): move(4,15)
+	            if 'KEY_Q' in str(key) and (key.keystate == key.key_down): move(5,15)
+	            if 'KEY_E' in str(key) and (key.keystate == key.key_down): move(6,15)
 
-            if (! key.keystate == key.key_hold): move(0,0)
-            if 'KEY_ESC' in str(key): break
+	            if (! key.keystate == key.key_hold): move(0,0)
+	            if 'KEY_ESC' in str(key): break
+	            
+    	print '[...] Stoping Keyboard [...]'
+    except:
+		print '[...] Error With KeyBoard [...]'
 
-    print '[...] Stoping Keyboard [...]'
+    
 def controllerXbox():
     try:
         for event in xbox_read.event_stream(deadzone=12000):
