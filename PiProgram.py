@@ -71,10 +71,19 @@ class Base:
 # =====> Car Class
 class Car:
     def __init__(self):
-        print '[...] Starting up the Car [...]'
         x = 0
         y = 0
 
+        try:
+            with open("macFile.txt","w+") as macFile: macaddr = macFile.readline().rstrip("\n")
+        except IOError:
+            print "[...] MAC address File doesn't seem to Exist [...]"
+
+        sock = connecting(macaddr)
+
+        if sock != '': 
+            print '[...] Starting up the Car [...]'
+            
     def connecting(self,bdr_addr):
         try:
             sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
@@ -129,19 +138,7 @@ class Car:
 
 if __name__ == "__main__":
     base = Base()
-    try:
-        with open("macFile.txt","r+") as macFile:
-            macaddr=macFile.readline().rstrip("\n")
-            print macaddr
-        # TODO: go through all theMACs if it fails to connect
-    except IOError: #should be unecesary cause "r+" should create a file if it doesn't exist
-        print "[...] MAC address File doesn't seem to Exist [...]"
-
-    # sock = base.connecting("00:12:05:09:97:76")
-    sock = base.connecting(macaddr)
-
-
+    
     wheel = Wheel()
 
-    
     base.main()
