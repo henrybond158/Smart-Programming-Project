@@ -2,6 +2,7 @@
 import pygtk
 pygtk.require('2.0')
 import gtk
+import wheel
 
 class Base:
   def destroy(self, widget, data=None):
@@ -59,6 +60,18 @@ class Base:
     self.window.add(fixed)
     self.window.show_all()
     self.window.connect("destroy",self.destroy)
+  def controllerXbox():
+    try:
+        for event in xbox_read.event_stream(deadzone=12000):
+
+            # Must build in truning and moving
+
+            if event.key == 'Y1' and event.value > 1: move(1,(int(event.value) /2200))
+            if event.key == 'Y1' and event.value < 1: move(2,(int(event.value) /2200))
+            if event.key == 'X1' and event.value > 1: move(5,(int(event.value) /2200))
+            if event.key == 'X1' and event.value < 1: move(6,(int(event.value) /2200))
+    except:
+        print '[...] Error With Controller [...]'
 
   def main(self):
     gtk.main()
