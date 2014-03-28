@@ -141,7 +141,7 @@ class Car:
 
     ##### Accelerometer #####
     def axelmeter(self, speed):
-        progbar.set_fraction(speed/11.0)
+        self.progbar.set_fraction(speed/11.0)
 
 if __name__ == "__main__":
     base = Base()
