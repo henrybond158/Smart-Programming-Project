@@ -22,11 +22,23 @@ class Base:
         print('you clicked the right button')
     def cruise(self, widget, data=None):
         print("you be crusing")
+    def selection_changed(self, widget, data=None):
+	    print ("keyboard selected")
+    def xboxController(self, widget, data=None):
+    	print ("xbox selected")
+    def wheelController(self, widget, data=None):
+	    print("wheel selected")
+    def selection_changed( self, w, data=None):
+        self.label.set_label( "Current selection: <b>%s</b>" % data)
+
 
     def __init__(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_position(gtk.WIN_POS_CENTER)
         self.window.set_size_request(500,300)
+        self.mainbox = gtk.VBox()
+        self.window.add( self.mainbox)
+        
         fixed = gtk.Fixed()
         #button left
         self.button1 = gtk.Button("Left")
@@ -34,7 +46,8 @@ class Base:
 
         
       
-        fixed.put(self.button1, 20, 50)
+        #fixed.put(self.button1, 20, 50)
+        self.mainbox.pack_start(self.button1,expand=False)
 
         #button cruise
         self.button2 = gtk.Button("Cruise")
@@ -59,7 +72,21 @@ class Base:
 
         fixed.put(self.button5, 50, 80)
 
-
+        #create vbox for radio buttons
+      
+        radio1 = gtk.RadioButton( None, "Python script")
+        self.mainbox.pack_start( radio1, expand=False)
+        radio1.show()
+        radio1.connect( "toggled", self.selection_changed, "Keyboard")
+        for text in ["Wheel","XboxController","PS3 Controller"]:
+            radio = gtk.RadioButton( radio1, text)
+            self.mainbox.pack_start( radio, expand=False)
+            radio.connect( "toggled", self.selection_changed, text)
+        radio1.set_active( True)
+        # this forces the 'toggled' signal to be emitted 
+        radio1.toggled()  
+        # show the box
+        self.mainbox.show()
 
         self.window.add(fixed)
         self.window.show_all()
@@ -139,6 +166,6 @@ class Car:
 if __name__ == "__main__":
     base = Base()
     
-    wheel = Wheel()
+    #wheel = WheelClass()
 
     base.main()
