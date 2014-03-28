@@ -13,13 +13,16 @@ def timeFunction(t):
 	"""
 
 
+def oldmove(dir, spd):
+	if (dir < 15) or (spd < 15):
+		sock.send(chr((dir*16) + spd))
 
 def threewayturn():
 	startTime = time.time()
-	while time.time() < startTime +3:
-		move(5, 11)
+	while time.time() < startTime +3
+		oldmove(5, 11)
 	while time.time() < startTime + 6:
-		move(7,11)
+		oldmove(7,11)
 
 def spazzOut():
 	"""
@@ -29,6 +32,7 @@ def spazzOut():
 	timeElapsed = startTime
 	while time.time() < startTime +12:
 		moveTime = time.time()
-		direction = random.randint(1,8)
+		# direction = random.randint(1,8) # Not using this as just turning weels is useless
+		direction = random.choice([1,2,5,6,7,8])
 		while time.time() < moveTime + 3:
-			move(direction,11)
+			oldmove(direction,11)

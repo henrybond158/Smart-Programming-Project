@@ -72,6 +72,7 @@ class Base:
 
         fixed.put(self.button5, 50, 80)
 
+<<<<<<< HEAD
         #create vbox for radio buttons
       
         radio1 = gtk.RadioButton( None, "Python script")
@@ -87,6 +88,11 @@ class Base:
         radio1.toggled()  
         # show the box
         self.mainbox.show()
+=======
+        #Prog Bar == Accelerometer
+        self.progbar = gtk.ProgressBar()
+        fixed.put(self.progbar,140, 50)
+>>>>>>> f9a06cf80706787975034f473993b4aab1f3e1c5
 
         self.window.add(fixed)
         self.window.show_all()
@@ -126,6 +132,7 @@ class Car:
         sock.send(chr((dir * arra[y + 1][x + 1]) + spd))
         x = 0
         y = 0
+        axelmeter(spd)
 
     
     def keyboard(self):
@@ -162,6 +169,10 @@ class Car:
             print '[...] Error With Controller [...]'
     def controllerPs3(self):
         print '[...] Ps3 Controller [...]'
+
+    ##### Accelerometer #####
+    def axelmeter(self, speed):
+        self.progbar.set_fraction(speed/11.0)
 
 if __name__ == "__main__":
     base = Base()
