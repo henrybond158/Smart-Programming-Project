@@ -22,11 +22,13 @@ class WheelClass:
 
                 #print self.joystick.get_axis(0)
 		if (self.joystick.get_axis(0) > 0.075):
-			
+			turning = -1
 			print "turning right"
 		elif (self.joystick.get_axis(0) < -0.055):
+			turning = 1
 			print "turning left"
 		else:
+			turning = 0
 			print "straight line"
 		#sys.stdout.write("CLUTCH: ")
 		#print self.joystick.get_axis(1) 	
@@ -51,4 +53,4 @@ class WheelClass:
 		#print self.joystick.get_axis(3) 
 		#print self.joystick.get_axis(4) 
 		#print self.joystick.get_axis(5) 
-		return direction, 0, speed
+		return direction, turning, speed

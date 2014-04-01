@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import *
 pygtk.require('2.0')
 import gtk
+import os
 import wheel
 import sys, select, tty, termios, bluetooth, time
 from evdev import InputDevice, categorize, ecodes       # Device Input
@@ -98,81 +99,53 @@ class Base:
         self.window.connect("destroy",self.destroy)
 
     def main(self):
+
+        wheelClass = wheel.WheelClass()
+        
+
         carClass = Car()
         gtk.main()
 
 # =====> Car Class
 class Car:
+    x = 1
+    y = 1
 
-  
     def __init__(self):
-        x = 0
-        y = 0
+
 
         try:
-            with open("macFile.txt","w+") as macFile: macaddr = macFile.readline().rstrip("\n")
+            with open("macFile","r+") as macFile: macaddr = macFile.readline().rstrip("\n")
         except IOError:
             print "[...] MAC address File doesn't seem to Exist [...]"
 
-        sock = self.connecting(macaddr)
+        self.sock = self.connecting(macaddr)
 
-        if sock != '': 
-            print '[...] Starting up the Car [...]'
+        
 
         self.keyboard()
    
-    def moveX(self, st): x = st
-    def moveY(self, st): y = st
+    def moveX(self, st): self.x = st
+    def moveY(self, st): self.y = st
     def move(self, spd):
         arra = [[5,1,6], [3,0,4], [7,2,8]]
-        #sock.send(chr((dir * arra[y + 1][x + 1]) + spd));
-        print " >> " +  str(dir * arra[y + 1][x + 1]) + " - " + spd
-        axelmeter(spd)
+        self.sock.send(chr((arra[self.y][self.x]) + spd))
 
-    
-    #def keyboard(self):
-     #   try:
-      #      dev = InputDevice('/dev/input/event0')
-#
- #           for event in dev.read_loop():
-  #              if event.type == ecodes.EV_KEY:
-   #                 key = categorize(event)
-#
- #                   if 'KEY_W' in str(key) and (key.keystate == key.key_down): moveY(1)
-  #                  if 'KEY_S' in str(key) and (key.keystate == key.key_down): moveY(-1)
-   #                 if 'KEY_A' in str(key) and (key.keystate == key.key_down): moveX(-1)
-    #                if 'KEY_D' in str(key) and (key.keystate == key.key_down): moveX(1)
-#
- #                   if (key.keystate != key.key_hold): move(15)
-  #                  if 'KEY_ESC' in str(key): break
-   #                 
-    #        print '[...] Stoping Keyboard [...]'
-     #   except:
-      #      print '[...] Error With Keyboard [...]'
     def keyboard(self):
-        print 'hit the keyboard'
-        pygame.event.pump()
         while True:
             pygame.event.pump()
             self.pressed = pygame.key.get_pressed()
 
-            if self.pressed[K_UP]: self.moveY(1)
-            if self.pressed[K_DOWN]: self.moveY(-1)
-            if self.pressed[K_LEFT]: self.moveX(1)
-            if self.pressed[K_RIGHT]: self.moveX(-1)
+            if self.pressed[K_UP]: self.moveY(0)
+            elif self.pressed[K_DOWN]: self.moveY(2)
+            else: self.moveY(1)
 
-            if self.pressed[KEY_ESC]: break
+            if self.pressed[K_LEFT]: self.moveX(0)
+            elif self.pressed[K_RIGHT]: self.moveX(2)
+            else: self.moveX(1)
 
-            move(15)
-    def connecting(self,bdr_addr):
-        try:
-            sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-            sock.connect((bdr_addr, port))
-            return sock
-        except:
-            return ''
-
-
+            self.move(15)
+            if self.pressed[K_ESCAPE]: break
     def controllerXbox(self):
         print '[...] Xbox Controller [...]'
         try:
@@ -188,15 +161,30 @@ class Car:
             print '[...] Error With Controller [...]'
     def controllerPs3(self):
         print '[...] Ps3 Controller [...]'
+       
+    def wheel(self):
+        array=base.wheelClass.getMov()
+
+    def connecting(self,bdr_addr):
+        try:
+            print bdr_addr
+            sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+            sock.connect((bdr_addr, 1))
+            print "[...] Connection Works [...]"
+            return sock
+        except:
+            print "[...] Connection Failed [...]"
+            return ''
+
+
+
 
     ##### Accelerometer #####
     def axelmeter(self, speed):
         self.progbar.set_fraction(speed/11.0)
 
 if __name__ == "__main__":
-       base = Base()
-    
-    wheelClass = wheel.WheelClass()
-    array=wheelClass.getMov
+    base = Base()
 
     base.main()
+
