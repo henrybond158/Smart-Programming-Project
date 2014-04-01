@@ -1,11 +1,13 @@
 #!/usr/bin/python
 import pygtk
+import pygame
+from pygame.locals import *
 pygtk.require('2.0')
 import gtk
 import wheel
 import sys, select, tty, termios, bluetooth, time
 from evdev import InputDevice, categorize, ecodes       # Device Input
-from lib import xbox_read                               # Controller Lib
+#from lib import xbox_read                               # Controller Lib
 
 # =====> GUI Class
 class Base:
@@ -23,11 +25,11 @@ class Base:
     def cruise(self, widget, data=None):
         print("you be crusing")
     def selection_changed(self, widget, data=None):
-	    print ("keyboard selected")
+        print ("keyboard selected")
     def xboxController(self, widget, data=None):
-    	print ("xbox selected")
+        print ("xbox selected")
     def wheelController(self, widget, data=None):
-	    print("wheel selected")
+        print("wheel selected")
     def selection_changed( self, w, data=None):
         self.label.set_label( "Current selection: <b>%s</b>" % data)
 
@@ -72,7 +74,6 @@ class Base:
 
         fixed.put(self.button5, 50, 80)
 
-<<<<<<< HEAD
         #create vbox for radio buttons
       
         radio1 = gtk.RadioButton( None, "Python script")
@@ -88,21 +89,22 @@ class Base:
         radio1.toggled()  
         # show the box
         self.mainbox.show()
-=======
         #Prog Bar == Accelerometer
         self.progbar = gtk.ProgressBar()
         fixed.put(self.progbar,140, 50)
->>>>>>> f9a06cf80706787975034f473993b4aab1f3e1c5
 
         self.window.add(fixed)
         self.window.show_all()
         self.window.connect("destroy",self.destroy)
 
     def main(self):
+        carClass = Car()
         gtk.main()
 
 # =====> Car Class
 class Car:
+
+  
     def __init__(self):
         x = 0
         y = 0
@@ -112,11 +114,56 @@ class Car:
         except IOError:
             print "[...] MAC address File doesn't seem to Exist [...]"
 
-        sock = connecting(macaddr)
+        sock = self.connecting(macaddr)
 
         if sock != '': 
             print '[...] Starting up the Car [...]'
-            
+
+        self.keyboard()
+   
+    def moveX(self, st): x = st
+    def moveY(self, st): y = st
+    def move(self, spd):
+        arra = [[5,1,6], [3,0,4], [7,2,8]]
+        #sock.send(chr((dir * arra[y + 1][x + 1]) + spd));
+        print " >> " +  str(dir * arra[y + 1][x + 1]) + " - " + spd
+        axelmeter(spd)
+
+    
+    #def keyboard(self):
+     #   try:
+      #      dev = InputDevice('/dev/input/event0')
+#
+ #           for event in dev.read_loop():
+  #              if event.type == ecodes.EV_KEY:
+   #                 key = categorize(event)
+#
+ #                   if 'KEY_W' in str(key) and (key.keystate == key.key_down): moveY(1)
+  #                  if 'KEY_S' in str(key) and (key.keystate == key.key_down): moveY(-1)
+   #                 if 'KEY_A' in str(key) and (key.keystate == key.key_down): moveX(-1)
+    #                if 'KEY_D' in str(key) and (key.keystate == key.key_down): moveX(1)
+#
+ #                   if (key.keystate != key.key_hold): move(15)
+  #                  if 'KEY_ESC' in str(key): break
+   #                 
+    #        print '[...] Stoping Keyboard [...]'
+     #   except:
+      #      print '[...] Error With Keyboard [...]'
+    def keyboard(self):
+        print 'hit the keyboard'
+        pygame.event.pump()
+        while True:
+            pygame.event.pump()
+            self.pressed = pygame.key.get_pressed()
+
+            if self.pressed[K_UP]: self.moveY(1)
+            if self.pressed[K_DOWN]: self.moveY(-1)
+            if self.pressed[K_LEFT]: self.moveX(1)
+            if self.pressed[K_RIGHT]: self.moveX(-1)
+
+            if self.pressed[KEY_ESC]: break
+
+            move(15)
     def connecting(self,bdr_addr):
         try:
             sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
@@ -125,35 +172,7 @@ class Car:
         except:
             return ''
 
-    def moveX(self, st): x = st
-    def moveY(self, st): y = st
-    def move(self, spd):
-        arra = [[5,1,6], [3,0,4], [7,2,8]]
-        sock.send(chr((dir * arra[y + 1][x + 1]) + spd))
-        x = 0
-        y = 0
-        axelmeter(spd)
 
-    
-    def keyboard(self):
-        try:
-            dev = InputDevice('/dev/input/event0')
-
-            for event in dev.read_loop():
-                if event.type == ecodes.EV_KEY:
-                    key = categorize(event)
-
-                    if 'KEY_W' in str(key) and (key.keystate == key.key_down): moveY(1)
-                    if 'KEY_S' in str(key) and (key.keystate == key.key_down): moveY(-1)
-                    if 'KEY_A' in str(key) and (key.keystate == key.key_down): moveX(-1)
-                    if 'KEY_D' in str(key) and (key.keystate == key.key_down): moveX(1)
-
-                    if (key.keystate != key.key_hold): move(15)
-                    if 'KEY_ESC' in str(key): break
-                    
-            print '[...] Stoping Keyboard [...]'
-        except:
-            print '[...] Error With Keyboard [...]'
     def controllerXbox(self):
         print '[...] Xbox Controller [...]'
         try:
@@ -175,8 +194,9 @@ class Car:
         self.progbar.set_fraction(speed/11.0)
 
 if __name__ == "__main__":
-    base = Base()
+       base = Base()
     
-    #wheel = WheelClass()
+    wheelClass = wheel.WheelClass()
+    array=wheelClass.getMov
 
     base.main()
