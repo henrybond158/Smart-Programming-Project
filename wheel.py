@@ -22,14 +22,14 @@ class WheelClass:
 
                 #print self.joystick.get_axis(0)
 		if (self.joystick.get_axis(0) > 0.075):
-			turning = -1
-			print "turning right"
+			turning = 2
+			#print "turning right"
 		elif (self.joystick.get_axis(0) < -0.055):
-			turning = 1
-			print "turning left"
-		else:
 			turning = 0
-			print "straight line"
+			#print "turning left"
+		else:
+			turning = 1
+			#print "straight line"
 		#sys.stdout.write("CLUTCH: ")
 		#print self.joystick.get_axis(1) 	
 		#sys.stdout.write("THROTTLE: ")
@@ -37,9 +37,9 @@ class WheelClass:
 		speed = 1 - speed
 		speed = int(speed * 15)
 		if (speed > 0):
-			direction = 1
-		else:
 			direction = 0
+		else:
+			direction = 1
 		#print self.joystick.get_axis(2) 
 		rSpeed = (self.joystick.get_axis(3) + 1) / 2
 		rSpeed = 1 - rSpeed

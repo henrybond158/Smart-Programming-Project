@@ -98,19 +98,52 @@ class Base:
         self.window.show_all()
         self.window.connect("destroy",self.destroy)
 
+
     def main(self):
 
-        wheelClass = wheel.WheelClass()
+
+
+        self.menu()
+
         
+        gtk.main()
+    def menu(self):
+        os.system(['clear','cls'][os.name == 'nt'])
+        menu = {}
 
         carClass = Car()
-        gtk.main()
 
+        menu['1']=": Keyboard"
+        menu['2']=": Wheel"
+        menu['q']=": Quit"
+
+        while True: 
+            print "[...] Menu [...]\n"
+            options=menu.keys()
+            options.sort()
+
+            for entry in options: 
+                print "\t" + entry, menu[entry]
+
+            selection=raw_input("\nPlease Select: ") 
+            os.system(['clear','cls'][os.name == 'nt'])
+
+            if selection == '1': 
+                carClass.keyboard()
+            elif selection == '2': 
+                carClass.wheelHandler()
+            elif selection == 'q': 
+                break
+            else: 
+                print "Unknown Option Selected!"
+                time.sleep(1)
 # =====> Car Class
 class Car:
     x = 1
     y = 1
     last = 0
+    wheelClass = wheel.WheelClass()
+        
 
     def __init__(self):
 
@@ -121,10 +154,6 @@ class Car:
             print "[...] MAC address File doesn't seem to Exist [...]"
 
         self.sock = self.connecting(macaddr)
-
-        
-
-        self.keyboard()
    
     def moveX(self, st): self.x = st
     def moveY(self, st): self.y = st
@@ -133,8 +162,6 @@ class Car:
         ch = (16 * arra[self.y][self.x]) + spd
         if self.last != ch:
             self.sock.send(chr(ch))
-
-            print " >> " + str(self.last)
             self.last = ch
 
     def keyboard(self):
@@ -167,17 +194,19 @@ class Car:
             print '[...] Error With Controller [...]'
     def controllerPs3(self):
         print '[...] Ps3 Controller [...]'
-       
-    def wheel(self):
-        array=base.wheelClass.getMov()
-
+    def wheelHandler(self):
+        while True:
+            direction,turning,speed=self.wheelClass.getMov()
+            self.y = direction
+            self.x = turning
+            self.move(speed)
 
     def connecting(self,bdr_addr):
+        print "[...] Connecting to Car [...]"
         try:
-            print bdr_addr
             sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
             sock.connect((bdr_addr, 1))
-            print "[...] Connection Works [...]"
+            print "[...] Connection Success [...]"
             return sock
         except:
             print "[...] Connection Failed [...]"
@@ -194,4 +223,3 @@ if __name__ == "__main__":
     base = Base()
 
     base.main()
-
