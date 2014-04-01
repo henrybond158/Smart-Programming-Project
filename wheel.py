@@ -47,8 +47,8 @@ class WheelClass:
 		if (rSpeed > 0):
 			direction = 2
 			speed = rSpeed
-		print speed
-		print direction
+		#print speed
+		#print direction
 		#sys.stdout.write("BRAKE: ")
 		#print self.joystick.get_axis(3) 
 		#print self.joystick.get_axis(4) 
