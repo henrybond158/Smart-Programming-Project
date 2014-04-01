@@ -110,6 +110,7 @@ class Base:
 class Car:
     x = 1
     y = 1
+    last = 0
 
     def __init__(self):
 
@@ -129,7 +130,12 @@ class Car:
     def moveY(self, st): self.y = st
     def move(self, spd):
         arra = [[5,1,6], [3,0,4], [7,2,8]]
-        self.sock.send(chr((arra[self.y][self.x]) + spd))
+        ch = (16 * arra[self.y][self.x]) + spd
+        if self.last != ch:
+            self.sock.send(chr(ch))
+
+            print " >> " + str(self.last)
+            self.last = ch
 
     def keyboard(self):
         while True:
@@ -144,7 +150,7 @@ class Car:
             elif self.pressed[K_RIGHT]: self.moveX(2)
             else: self.moveX(1)
 
-            self.move(15)
+            self.move(8)
             if self.pressed[K_ESCAPE]: break
     def controllerXbox(self):
         print '[...] Xbox Controller [...]'
@@ -164,6 +170,7 @@ class Car:
        
     def wheel(self):
         array=base.wheelClass.getMov()
+
 
     def connecting(self,bdr_addr):
         try:
