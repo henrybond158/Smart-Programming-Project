@@ -1,5 +1,5 @@
 #/usr/bin/python
-
+import os
 import pygame
 import sys
 import time
@@ -8,9 +8,7 @@ import time
 class WheelClass:
 	def __init__(self):
 		self.d = 0
-		size = [600,400]
-		screen = pygame.display.set_mode(size)
-
+		os.environ["SDL_VIDEODRIVER"] = "dummy"
 		pygame.joystick.init()
 
 		self.joystick = pygame.joystick.Joystick(0)

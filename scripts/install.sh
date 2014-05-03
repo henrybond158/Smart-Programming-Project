@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "[...] Libs [...]"
+sudo apt-get -qq install python-gtk2
+
 echo "[...] Bluetooth [...]"
 
 sudo apt-get -qq install python-pip python-dev build-essential
