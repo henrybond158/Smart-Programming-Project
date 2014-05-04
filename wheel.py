@@ -4,6 +4,8 @@ import pygame
 import sys
 import time
 import gtk
+import pygtk
+
 pygtk.require('2.0')
 
 class WheelClass:
