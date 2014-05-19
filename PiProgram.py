@@ -54,6 +54,8 @@ class Base:
 
         menu['1']=": Keyboard"
         menu['2']=": Wheel"
+        menu['3']=": Xbox Controller"
+        menu['4']=": Playstation3 Controller"
         menu['q']=": Quit"
 
         while True: 
@@ -68,9 +70,17 @@ class Base:
             os.system(['clear','cls'][os.name == 'nt'])
 
             if selection == '1': 
+            	print '[...] Keyboard [...]'
                 carClass.keyboard()
             elif selection == '2': 
+            	print '[...] Wheel [...]'
                 carClass.wheelHandler()
+            elif selection == '2': 
+            	print '[...] Xbox Controller [...]'
+                carClass.controllerXbox()
+            elif selection == '2': 
+            	print '[...] Playstation3 Controller [...]'
+                carClass.controllerPs3()
             elif selection == 'q': 
                 break
             else: 
@@ -104,29 +114,42 @@ class Car:
             self.last = ch
 
     def keyboard(self):
+    # loop around each key press
         while True:
+        # Starts pulling keyboard inputs from pygame
             pygame.event.pump()
+        # Sets keyboard inputs to a variable
             self.pressed = pygame.key.get_pressed()
 
+        # if either the up/down button is pressed, set the Y axes to 
             if self.pressed[K_UP]: self.moveY(0)
             elif self.pressed[K_DOWN]: self.moveY(2)
             else: self.moveY(1)
 
+        # if either the left/right button is pressed, set the X axes to 
             if self.pressed[K_LEFT]: self.moveX(0)
             elif self.pressed[K_RIGHT]: self.moveX(2)
             else: self.moveX(1)
 
+        # Will run the move function, move with set the X/Y vars and move the car accordingly
             self.move(8)
+        # If the escape key is pressed, exit
             if self.pressed[K_ESCAPE]: break
     def controllerXbox(self):
-        print '[...] Xbox Controller [...]'
+    	# Will catch errors
         try:
+        # loop around xbox events
             for event in xbox_read.event_stream(deadzone=12000):
 
-                if event.key == 'Y1' and event.value > 1: moveY(1)
-                if event.key == 'Y1' and event.value < 1: moveY(-1)
-                if event.key == 'X1' and event.value > 1: moveX(1)
-                if event.key == 'X1' and event.value < 1: moveX(-1)
+            # if either the up/down button is pressed, set the Y axes to 
+                if event.key == 'Y1' and event.value > 1: self.moveY(2)
+                elif event.key == 'Y1' and event.value < 1: self.moveY(0)
+            	else: self.moveY(1)
+
+			# if either the left/right button is pressed, set the X axes to 
+                if event.key == 'X1' and event.value > 1: self.moveX(2)
+                elif event.key == 'X1' and event.value < 1: self.moveX(0)
+            	else: self.moveX(1)
 
                 move((int(event.value) /2200))
         except:
