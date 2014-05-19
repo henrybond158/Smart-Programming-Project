@@ -9,6 +9,8 @@ class WheelClass:
 	def __init__(self):
 		self.d = 0
 		os.environ["SDL_VIDEODRIVER"] = "dummy"
+		pygame.init()
+		pygame.display.set_mode((1,1))
 		pygame.joystick.init()
 
 		self.joystick = pygame.joystick.Joystick(0)

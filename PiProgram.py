@@ -36,14 +36,7 @@ class Base:
 
 
     def __init__(self):
-
-
-    def main(self):
-
-
-
-        self.menu()
-
+	self.menu()
         
         # gtk.main()
     def menu(self):
