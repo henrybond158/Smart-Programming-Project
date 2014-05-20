@@ -14,6 +14,66 @@ import gobject
 
 # =====> GUI Class
 
+def cli_menu():
+	os.system(['clear','cls'][os.name == 'nt'])
+	menu = {}
+
+	if Car().test("00:12:05:09:90:22"):
+		print "[...]\033[92m Connection Successful \033[0m[...]"
+	else:
+		print "[...]\033[91m Connection Failed \033[0m [...]"
+
+
+	carClass = Car()
+	carClass.connecting("00:12:05:09:90:22")
+
+	menu['1']=": Keyboard"
+	menu['2']=": Wheel"
+	menu['3']=": Xbox Controller"
+	menu['4']=": Playstation3 Controller"
+	menu['m']=": Change the Mac Address"
+	menu['g']=": GUI"
+	menu['q']=": Quit"
+
+	# Base()
+	# gtk.main()
+
+	while True: 
+		print "[...] Menu [...]\n"
+		options=menu.keys()
+		options.sort()
+
+		for entry in options: 
+			print "\t" + entry, menu[entry]
+
+		selection=raw_input("\nPlease Select: ") 
+		os.system(['clear','cls'][os.name == 'nt'])
+
+
+
+		if selection == '1': 
+			print '[...] Keyboard [...]'
+			carClass.keyboard()
+		elif selection == '2': 
+			print '[...] Wheel [...]'
+			carClass.wheelHandler()
+		elif selection == '3': 
+			print '[...] Xbox Controller [...]'
+			carClass.controllerXbox()
+		elif selection == '4': 
+			print '[...] Playstation3 Controller [...]'
+			carClass.controllerPs3()
+		elif selection == 'm':
+			self.getMacAddress(True)
+		elif selection == 'g':
+			Base()
+			gtk.main()
+		elif selection == 'q':
+			break
+		else: 
+			print "Unknown Option Selected!"
+			time.sleep(1)
+
 class Base(gtk.Window):
 
 	def destroy(self, widget, data=None):
@@ -109,6 +169,24 @@ class Base(gtk.Window):
 		gobject.idle_add(pygame.display.update)
 		self.show_all()
 
+		screen = pygame.display.get_surface()
+		self.joystick = pygame.joystick.Joystick(0)
+		self.joystick.init()
+
+		wheelClass = wheel.WheelClass(self.joystick)
+		
+		if Car().test("00:12:05:09:90:22"):
+			print "[...]\033[92m Connection Successful \033[0m[...]"
+		else:
+			print "[...]\033[91m Connection Failed \033[0m [...]"
+
+
+		carClass = Car()
+		carClass.connecting("00:12:05:09:90:22")
+
+		carClass.keyboard()
+		
+
 
 
 # =====> Car Class
@@ -116,7 +194,12 @@ class Car:
 	x = 1
 	y = 1
 	last = 0
-	wheelClass = wheel.WheelClass()
+
+	# screen = pygame.display.get_surface()
+	# self.joystick = pygame.joystick.Joystick(0)
+	# self.joystick.init()
+
+	# wheelClass = wheel.WheelClass(self.joystick)
 		
 
 	def __init__(self):
@@ -198,7 +281,16 @@ class Car:
 			print "[...] Connection Failed [...]"
 			return ''
 
+	def test(self,mac):
+		try:
+			testSock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+			testSock.connect((mac, 1))
 
+			testSock.close()
+			time.sleep(.5)
+			return True
+		except:
+			return False
 
 
 	##### Accelerometer #####
@@ -208,5 +300,6 @@ class Car:
 
 if __name__ == "__main__":
 
+	# cli_menu()
 	Base()
 	gtk.main()

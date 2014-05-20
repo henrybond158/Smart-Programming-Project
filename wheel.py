@@ -9,16 +9,17 @@ import pygtk
 pygtk.require('2.0')
 
 class WheelClass:
-	def __init__(self):
+	def __init__(self,joystick):
 		
-		os.putenv('SDL_WINDOWID', str(self.window.xid))
-		gtk.gdk.flush()
-		pygame.init()
-		pygame.display.set_mode((WINX,WINY),0,0)
+		# os.putenv('SDL_WINDOWID', str(self.window.xid))
+		# gtk.gdk.flush()
+		# pygame.init()
+		# pygame.display.set_mode((WINX,WINY),0,0)
 
-		screen = pygame.display.get_surface()
-		self.joystick = pygame.joystick.Joystick(0)
-		self.joystick.init()
+		# screen = pygame.display.get_surface()
+		# self.joystick = pygame.joystick.Joystick(0)
+		self.joystick = joystick
+
 		
 
 	def getMov(self):
