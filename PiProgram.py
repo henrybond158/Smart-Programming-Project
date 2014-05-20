@@ -80,7 +80,7 @@ class Base(gtk.Window):
             else: 
                 print "Unknown Option Selected!"
                 time.sleep(1)
->>>>>>> 2636dbca5c212e471a3f40e07f5ad6223c48f064
+
 # =====> Car Class
 class Car:
 	x = 1

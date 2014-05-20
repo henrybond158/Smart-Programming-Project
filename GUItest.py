@@ -4,7 +4,7 @@ class PyApp(gtk.Window):
 	def __init__(self):
 		super(PyApp, self).__init__()
 
-		vbox = gtk.VBox(False, 5)
+		self.set_title("Car GUI")
 		self.set_size_request(300, 200)
 		self.set_position(gtk.WIN_POS_CENTER)
 
