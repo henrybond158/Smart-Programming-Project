@@ -43,6 +43,11 @@ class Base(gtk.Window):
 
         carClass = Car()
 
+        if carClass.test("00:12:05:09:90:22"):
+            print "[...]\033[92m Connection Successful \033[0m[...]"
+        else:
+            print "[...]\033[91m Connection Failed \033[0m [...]"
+
         menu['1']=": Keyboard"
         menu['2']=": Wheel"
         menu['3']=": Xbox Controller"
@@ -80,24 +85,15 @@ class Base(gtk.Window):
             else: 
                 print "Unknown Option Selected!"
                 time.sleep(1)
->>>>>>> 2636dbca5c212e471a3f40e07f5ad6223c48f064
+
 # =====> Car Class
 class Car:
-	x = 1
-	y = 1
-	last = 0
-	wheelClass = wheel.WheelClass()
-		
+    def __init__(self):
+    	x = 1
+    	y = 1
+    	last = 0
+    	wheelClass = wheel.WheelClass()
 
-	def __init__(self):
-
-
-		try:
-			with open("macFile","r+") as macFile: macaddr = macFile.readline().rstrip("\n")
-		except IOError:
-			print "[...] MAC address File doesn't seem to Exist [...]"
-
-		self.sock = self.connecting(macaddr)
     def moveX(self, st): self.x = st
     def moveY(self, st): self.y = st
     def move(self, spd):
@@ -106,9 +102,10 @@ class Car:
         if self.last != ch:
             self.sock.send(chr(ch))
             self.last = ch
+            print "Last: " + str(self.last)
 
     def keyboard(self):
-    # loop around each key press
+        # loop around each key press
         while True:
         # Starts pulling keyboard inputs from pygame
             pygame.event.pump()
@@ -167,7 +164,14 @@ class Car:
         except:
             print "[...] Connection Failed [...]"
             return ''
+    def test(self,mac):
+        try:
+            testSock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+            testSock.connect((mac, 1))
 
+            testSock.close()
+            return True
+        except: return False
 
 
 
