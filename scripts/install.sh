@@ -10,14 +10,17 @@ sudo apt-get -qq install --no-install-recommends bluetooth
 sudo apt-get -qq install bluez python-bluez bluez-hcidump
 sudo pip install evdev
 
-echo "[...] Connectioning to: $1 [...]"
+echo "[...] Drivers [...]"
+sudo apt-get -qq install xboxdrv
 
-/etc/init.d/bluetooth restart
-bluez-simple-agent hci0 $1
+if [[ -n "$1" ]]; then
+	echo "[...] Connectioning to: " $1 " [...]"
 
-echo "Controllers..."
+	/etc/init.d/bluetooth restart
+	bluez-simple-agent hci0 $1
+else echo "[...] No Mac Address Set [...]"; fi;
+
+# =====> Refs
 
 # Link: mattdyson.org/blog/2013/01/using-an-xbox-360-wireless-controller-with-raspberry-pi/
-
-sudo apt-get -qq install xboxdrv
-#git clone https://github.com/zephod/lego-pi.git legopi
+# git clone https://github.com/zephod/lego-pi.git legopi

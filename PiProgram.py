@@ -7,8 +7,8 @@ import gtk
 import os
 import wheel
 import sys, select, tty, termios, bluetooth, time
-from evdev import InputDevice, categorize, ecodes       # Device Input
-#from lib import xbox_read                               # Controller Lib
+from evdev import InputDevice, categorize, ecodes # Device Input
+#from lib import xbox_read # Controller Lib
 
 # =====> GUI Class
 class Base:
@@ -36,10 +36,6 @@ class Base:
 
 
     def __init__(self):
-	self.menu()
-        
-        # gtk.main()
-    def menu(self):
         os.system(['clear','cls'][os.name == 'nt'])
         menu = {}
 
@@ -49,6 +45,7 @@ class Base:
         menu['2']=": Wheel"
         menu['3']=": Xbox Controller"
         menu['4']=": Playstation3 Controller"
+        menu['m']=": Change the Mac Address"
         menu['q']=": Quit"
 
         while True: 
@@ -63,18 +60,20 @@ class Base:
             os.system(['clear','cls'][os.name == 'nt'])
 
             if selection == '1': 
-            	print '[...] Keyboard [...]'
+                print '[...] Keyboard [...]'
                 carClass.keyboard()
             elif selection == '2': 
-            	print '[...] Wheel [...]'
+                print '[...] Wheel [...]'
                 carClass.wheelHandler()
-            elif selection == '2': 
-            	print '[...] Xbox Controller [...]'
+            elif selection == '3': 
+                print '[...] Xbox Controller [...]'
                 carClass.controllerXbox()
-            elif selection == '2': 
-            	print '[...] Playstation3 Controller [...]'
+            elif selection == '4': 
+                print '[...] Playstation3 Controller [...]'
                 carClass.controllerPs3()
-            elif selection == 'q': 
+            elif selection == 'm':
+                self.getMacAddress(True)
+            elif selection == 'q':
                 break
             else: 
                 print "Unknown Option Selected!"
@@ -114,12 +113,12 @@ class Car:
         # Sets keyboard inputs to a variable
             self.pressed = pygame.key.get_pressed()
 
-        # if either the up/down button is pressed, set the Y axes to 
+        # if either the up/down button is pressed, set the Y axes to
             if self.pressed[K_UP]: self.moveY(0)
             elif self.pressed[K_DOWN]: self.moveY(2)
             else: self.moveY(1)
 
-        # if either the left/right button is pressed, set the X axes to 
+        # if either the left/right button is pressed, set the X axes to
             if self.pressed[K_LEFT]: self.moveX(0)
             elif self.pressed[K_RIGHT]: self.moveX(2)
             else: self.moveX(1)
@@ -129,20 +128,20 @@ class Car:
         # If the escape key is pressed, exit
             if self.pressed[K_ESCAPE]: break
     def controllerXbox(self):
-    	# Will catch errors
+     # Will catch errors
         try:
         # loop around xbox events
             for event in xbox_read.event_stream(deadzone=12000):
 
-            # if either the up/down button is pressed, set the Y axes to 
+            # if either the up/down button is pressed, set the Y axes to
                 if event.key == 'Y1' and event.value > 1: self.moveY(2)
                 elif event.key == 'Y1' and event.value < 1: self.moveY(0)
-            	else: self.moveY(1)
+                else: self.moveY(1)
 
-			# if either the left/right button is pressed, set the X axes to 
+# if either the left/right button is pressed, set the X axes to
                 if event.key == 'X1' and event.value > 1: self.moveX(2)
                 elif event.key == 'X1' and event.value < 1: self.moveX(0)
-            	else: self.moveX(1)
+                else: self.moveX(1)
 
                 move((int(event.value) /2200))
         except:
@@ -175,6 +174,4 @@ class Car:
         self.progbar.set_fraction(speed/11.0)
 
 if __name__ == "__main__":
-    base = Base()
-
-    base.main()
+    Base()
