@@ -36,10 +36,11 @@ class Base(gtk.Window):
     def selection_changed( self, w, data=None):
         self.label.set_label( "Current selection: <b>%s</b>" % data)
 
-
     def __init__(self):
         os.system(['clear','cls'][os.name == 'nt'])
         menu = {}
+
+        print "[...] Connecting to the Car [...]"
 
         if Car().test("00:12:05:09:90:22"):
             print "[...]\033[92m Connection Successful \033[0m[...]"
@@ -106,7 +107,6 @@ class Car:
         if self.last != ch:
             self.sock.send(chr(ch))
             self.last = ch
-            print "Last: " + str(self.last)
 
     def keyboard(self):
         # loop around each key press
@@ -131,7 +131,7 @@ class Car:
         # If the escape key is pressed, exit
             if self.pressed[K_ESCAPE]: break
     def controllerXbox(self):
-     # Will catch errors
+        # Will catch errors
         try:
         # loop around xbox events
             for event in xbox_read.event_stream(deadzone=12000):
@@ -141,7 +141,7 @@ class Car:
                 elif event.key == 'Y1' and event.value < 1: self.moveY(0)
                 else: self.moveY(1)
 
-# if either the left/right button is pressed, set the X axes to
+            # if either the left/right button is pressed, set the X axes to
                 if event.key == 'X1' and event.value > 1: self.moveX(2)
                 elif event.key == 'X1' and event.value < 1: self.moveX(0)
                 else: self.moveX(1)
@@ -183,5 +183,4 @@ class Car:
 
 
 if __name__ == "__main__":
-
     Base()

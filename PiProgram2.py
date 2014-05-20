@@ -14,65 +14,7 @@ import gobject
 
 # =====> GUI Class
 
-def cli_menu():
-	os.system(['clear','cls'][os.name == 'nt'])
-	menu = {}
 
-	if Car().test("00:12:05:09:90:22"):
-		print "[...]\033[92m Connection Successful \033[0m[...]"
-	else:
-		print "[...]\033[91m Connection Failed \033[0m [...]"
-
-
-	carClass = Car()
-	carClass.connecting("00:12:05:09:90:22")
-
-	menu['1']=": Keyboard"
-	menu['2']=": Wheel"
-	menu['3']=": Xbox Controller"
-	menu['4']=": Playstation3 Controller"
-	menu['m']=": Change the Mac Address"
-	menu['g']=": GUI"
-	menu['q']=": Quit"
-
-	# Base()
-	# gtk.main()
-
-	while True: 
-		print "[...] Menu [...]\n"
-		options=menu.keys()
-		options.sort()
-
-		for entry in options: 
-			print "\t" + entry, menu[entry]
-
-		selection=raw_input("\nPlease Select: ") 
-		os.system(['clear','cls'][os.name == 'nt'])
-
-
-
-		if selection == '1': 
-			print '[...] Keyboard [...]'
-			carClass.keyboard()
-		elif selection == '2': 
-			print '[...] Wheel [...]'
-			carClass.wheelHandler()
-		elif selection == '3': 
-			print '[...] Xbox Controller [...]'
-			carClass.controllerXbox()
-		elif selection == '4': 
-			print '[...] Playstation3 Controller [...]'
-			carClass.controllerPs3()
-		elif selection == 'm':
-			self.getMacAddress(True)
-		elif selection == 'g':
-			Base()
-			gtk.main()
-		elif selection == 'q':
-			break
-		else: 
-			print "Unknown Option Selected!"
-			time.sleep(1)
 
 class Base(gtk.Window):
 
@@ -101,6 +43,15 @@ class Base(gtk.Window):
 
 	def __init__(self):
 		super(Base, self).__init__()
+
+		if Car().test("00:12:05:09:90:22"):
+			print "[...]\033[92m Connection Successful \033[0m[...]"
+		else:
+			print "[...]\033[91m Connection Failed \033[0m [...]"
+
+
+		carClass = Car()
+		carClass.connecting("00:12:05:09:90:22")
 
 		WINX = 300
 		WINY = 200
@@ -155,7 +106,7 @@ class Base(gtk.Window):
 
 		self.add(fixed)
 		self.realize()
-
+		print '1'
 
 		self.connect("destroy", gtk.main_quit)
 
@@ -175,16 +126,8 @@ class Base(gtk.Window):
 
 		wheelClass = wheel.WheelClass(self.joystick)
 		
-		if Car().test("00:12:05:09:90:22"):
-			print "[...]\033[92m Connection Successful \033[0m[...]"
-		else:
-			print "[...]\033[91m Connection Failed \033[0m [...]"
 
-
-		carClass = Car()
-		carClass.connecting("00:12:05:09:90:22")
-
-		carClass.keyboard()
+		# carClass.keyboard()
 		
 
 
@@ -202,15 +145,9 @@ class Car:
 	# wheelClass = wheel.WheelClass(self.joystick)
 		
 
-	def __init__(self):
+	#def __init__(self):
 
 
-		try:
-			with open("macFile","r+") as macFile: macaddr = macFile.readline().rstrip("\n")
-		except IOError:
-			print "[...] MAC address File doesn't seem to Exist [...]"
-
-		self.sock = self.connecting(macaddr)
 	def moveX(self, st): self.x = st
 	def moveY(self, st): self.y = st
 	def move(self, spd):
@@ -221,6 +158,7 @@ class Car:
 			self.last = ch
 
 	def keyboard(self):
+		print "Keyboard"
 	# loop around each key press
 		while True:
 		# Starts pulling keyboard inputs from pygame
@@ -271,15 +209,11 @@ class Car:
 			self.move(speed)
 
 	def connecting(self,bdr_addr):
-		print "[...] Connecting to Car [...]"
 		try:
-			sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-			sock.connect((bdr_addr, 1))
-			print "[...] Connection Success [...]"
+			self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+			self.sock.connect((bdr_addr, 1))
 			return sock
-		except:
-			print "[...] Connection Failed [...]"
-			return ''
+		except: return ''
 
 	def test(self,mac):
 		try:
