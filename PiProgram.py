@@ -94,6 +94,8 @@ class Car:
     	last = 0
     	wheelClass = wheel.WheelClass()
 
+        self.sock = self.connecting("00:12:05:09:90:22")
+
     def moveX(self, st): self.x = st
     def moveY(self, st): self.y = st
     def move(self, spd):
