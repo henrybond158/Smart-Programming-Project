@@ -41,7 +41,14 @@ class Base(gtk.Window):
         os.system(['clear','cls'][os.name == 'nt'])
         menu = {}
 
+        if Car().test("00:12:05:09:90:22"):
+            print "[...]\033[92m Connection Successful \033[0m[...]"
+        else:
+            print "[...]\033[91m Connection Failed \033[0m [...]"
+
+
         carClass = Car()
+        carClass.connecting("00:12:05:09:90:22")
 
         menu['1']=": Keyboard"
         menu['2']=": Wheel"
@@ -83,21 +90,14 @@ class Base(gtk.Window):
 
 # =====> Car Class
 class Car:
-	x = 1
-	y = 1
-	last = 0
-	wheelClass = wheel.WheelClass()
-		
+    x = 1
+    y = 1
+    last = 0
+    wheelClass = wheel.WheelClass()
 
-	def __init__(self):
+    #def __init__(self):
 
 
-		try:
-			with open("macFile","r+") as macFile: macaddr = macFile.readline().rstrip("\n")
-		except IOError:
-			print "[...] MAC address File doesn't seem to Exist [...]"
-
-		self.sock = self.connecting(macaddr)
     def moveX(self, st): self.x = st
     def moveY(self, st): self.y = st
     def move(self, spd):
@@ -106,9 +106,10 @@ class Car:
         if self.last != ch:
             self.sock.send(chr(ch))
             self.last = ch
+            print "Last: " + str(self.last)
 
     def keyboard(self):
-    # loop around each key press
+        # loop around each key press
         while True:
         # Starts pulling keyboard inputs from pygame
             pygame.event.pump()
@@ -158,16 +159,21 @@ class Car:
             self.move(speed)
 
     def connecting(self,bdr_addr):
-        print "[...] Connecting to Car [...]"
         try:
-            sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
-            sock.connect((bdr_addr, 1))
-            print "[...] Connection Success [...]"
+            self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+            self.sock.connect((bdr_addr, 1))
             return sock
-        except:
-            print "[...] Connection Failed [...]"
-            return ''
+        except: return ''
+    def test(self,mac):
+        try:
+            testSock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+            testSock.connect((mac, 1))
 
+            testSock.close()
+            time.sleep(.5)
+            return True
+        except:
+            return False
 
 
 
