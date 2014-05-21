@@ -7,14 +7,13 @@ import time
 
 class WheelClass:
 	def __init__(self):
-		img = pygame.image.load("GUIPic.png").convert()
-
-
 		self.d = 0
 
 		size = [300,200]
-
+		# I made changes, notice
+		
 		screen = pygame.display.set_mode(size)		
+		img = pygame.image.load("GUIPic.png").convert()
 		# pygame.display.set_mode((1,1))
 		screen.blit(graphic, (0, 0)) #Display image at 0, 0
 		pygame.display.flip()   #Update screen
