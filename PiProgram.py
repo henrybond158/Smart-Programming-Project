@@ -36,26 +36,29 @@ class Base(gtk.Window):
 	def selection_changed( self, w, data=None):
 		self.label.set_label( "Current selection: <b>%s</b>" % data)
 
+	def getMacAddress(self):
+		return "00:12:05:09:94:45"
+
 	def __init__(self):
 		os.system(['clear','cls'][os.name == 'nt'])
 		menu = {}
 
 		print "[...] Connecting to the Car [...]"
 
-		if Car().test("00:12:05:09:94:45"):
+		if Car().test(self.getMacAddress()):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
+		
+			carClass = Car()
+			carClass.connecting(self.getMacAddress())
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
-
-
-		carClass = Car()
-		carClass.connecting("00:12:05:09:94:45")
 
 		menu['1']=": Keyboard"
 		menu['2']=": Wheel"
 		menu['3']=": Xbox Controller"
 		menu['4']=": Playstation3 Controller"
 		menu['p']=": Pre-set Figures"
+		menu['r']=": Reconnected"
 		menu['m']=": Change the Mac Address"
 		menu['q']=": Quit"
 
@@ -86,6 +89,12 @@ class Base(gtk.Window):
 				carClass.subPreMenu()
 			elif selection == 'm':
 				self.getMacAddress(True)
+			elif selection == 'r':
+				if Car().test(self.getMacAddress()):
+					print "[...]\033[92m Connection Successful \033[0m[...]"
+					carClass.connecting(self.getMacAddress())
+				else:
+					print "[...]\033[91m Connection Failed or Already Connected \033[0m [...]"
 			elif selection == 'q':
 				break
 			else: 
@@ -103,8 +112,12 @@ class Car:
 	#def __init__(self):
 
 
-	def moveX(self, st): self.x = st
-	def moveY(self, st): self.y = st
+	def moveX(self, st): 
+		if(st > -1 or st < 3):
+			self.x = st
+	def moveY(self, st): 
+		if(st > -1 or st < 3):
+			self.y = st
 	def moveXY(self, xBit, yBit, spd, tim):
 		self.x = xBit
 		self.y = yBit
