@@ -51,7 +51,7 @@ class Base(gtk.Window):
 
 
 		carClass = Car()
-		carClass.connecting("00:12:05:09:94:45")
+		self.sock = carClass.connecting("00:12:05:09:94:45")		
 
 		WINX = 300
 		WINY = 200
@@ -125,7 +125,9 @@ class Base(gtk.Window):
 		# self.joystick.init()
 
 		# wheelClass = wheel.WheelClass(self.joystick)
-		# carClass.keyboard()
+		print "Running keyboard"
+		time.sleep(5)
+		carClass.keyboard()
 		
 
 
