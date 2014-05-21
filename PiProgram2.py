@@ -44,14 +44,14 @@ class Base(gtk.Window):
 	def __init__(self):
 		super(Base, self).__init__()
 
-		if Car().test("00:12:05:09:90:22"):
+		if Car().test("00:12:05:09:94:45"):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
 
 		carClass = Car()
-		carClass.connecting("00:12:05:09:90:22")
+		carClass.connecting("00:12:05:09:94:45")
 
 		WINX = 300
 		WINY = 200
@@ -120,13 +120,11 @@ class Base(gtk.Window):
 		gobject.idle_add(pygame.display.update)
 		self.show_all()
 
-		screen = pygame.display.get_surface()
-		self.joystick = pygame.joystick.Joystick(0)
-		self.joystick.init()
+		# screen = pygame.display.get_surface()
+		# self.joystick = pygame.joystick.Joystick(0)
+		# self.joystick.init()
 
-		wheelClass = wheel.WheelClass(self.joystick)
-		
-
+		# wheelClass = wheel.WheelClass(self.joystick)
 		# carClass.keyboard()
 		
 
@@ -139,10 +137,11 @@ class Car:
 	last = 0
 
 	# screen = pygame.display.get_surface()
-	# self.joystick = pygame.joystick.Joystick(0)
+	pygame.joystick.init()
+	joystick = pygame.joystick.Joystick(0)
 	# self.joystick.init()
 
-	# wheelClass = wheel.WheelClass(self.joystick)
+	wheelClass = wheel.WheelClass(joystick)
 		
 
 	#def __init__(self):
@@ -221,7 +220,7 @@ class Car:
 			testSock.connect((mac, 1))
 
 			testSock.close()
-			time.sleep(.5)
+			time.sleep(1)
 			return True
 		except:
 			return False
