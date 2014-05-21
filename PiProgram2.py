@@ -9,6 +9,7 @@ import wheel
 import sys, select, tty, termios, bluetooth, time
 from evdev import InputDevice, categorize, ecodes # Device Input
 
+import threading
 import gobject
 #from lib import xbox_read # Controller Lib
 
@@ -106,7 +107,7 @@ class Base(gtk.Window):
 
 		self.add(fixed)
 		self.realize()
-		print '1'
+		print 'gogogo'
 
 		self.connect("destroy", gtk.main_quit)
 
@@ -125,9 +126,9 @@ class Base(gtk.Window):
 		# self.joystick.init()
 
 		# wheelClass = wheel.WheelClass(self.joystick)
-		print "Running keyboard"
 		time.sleep(5)
-		carClass.keyboard()
+		print "Running keyboard thread"
+		KeyboardThread = carClass.keyboard()
 		
 
 
@@ -142,6 +143,7 @@ class Car:
 	pygame.joystick.init()
 	joystick = pygame.joystick.Joystick(0)
 	# self.joystick.init()
+	print "Joystick initialized"
 
 	wheelClass = wheel.WheelClass(joystick)
 		
@@ -237,4 +239,7 @@ if __name__ == "__main__":
 
 	# cli_menu()
 	Base()
-	gtk.main()
+	GUIthread = grk.main()
+	print "Starting GUI thread"
+	GUIthread.start()
+	GUIthread.join()
