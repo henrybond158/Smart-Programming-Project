@@ -186,15 +186,20 @@ class Car:
         self.progbar.set_fraction(speed/11.0)
 class PreSetFunctions:
 	def threePointTurn(self):
+		moveXY(1, 2, 10, 1)		# backwards
+		moveXY(2, 2, 10, 1.5)	# backwards, right
+		moveXY(0, 0, 10, 1.5)	# forward, left
+		moveXY(1, 0, 10, 1)		# forward
 
-		moveXY(1, 2, 10, 1)
-		moveXY(2, 2, 10, 1.5)
-		moveXY(0, 0, 10, 1.5)
-		moveXY(1, 0, 10, 1)
 	def rightCircle(self):
-		moveXY(2, 0, 10, 10)
+		moveXY(2, 0, 10, 10)	# forward right
 	def leftCircle(self):
-		moveXY(0, 0, 10, 10)
+		moveXY(0, 0, 10, 10)	# forward left
+	def eigth(self):
+		moveXY(2, 0, 10, 4)		# forward right
+		moveXY(1, 0, 10, .2)	# forward
+		moveXY(0, 0, 10, 10)	# forward left
+		moveXY(1, 0, 10, .2)	# forward
 
 if __name__ == "__main__":
     Base()
