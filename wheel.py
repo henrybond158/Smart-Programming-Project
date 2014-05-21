@@ -3,23 +3,19 @@ import os
 import pygame
 import sys
 import time
-import gtk
-import pygtk
 
-pygtk.require('2.0')
 
 class WheelClass:
-	def __init__(self,joystick):
+	def __init__(self):
 		
-		# os.putenv('SDL_WINDOWID', str(self.window.xid))
-		# gtk.gdk.flush()
-		# pygame.init()
-		# pygame.display.set_mode((WINX,WINY),0,0)
+		os.environ['SDL_VIDEODRIVER'] = 'dummy'
+		pygame.init()
+		pygame.display.set_mode((1,1))
 
-		# screen = pygame.display.get_surface()
-		# self.joystick = pygame.joystick.Joystick(0)
-		self.joystick = joystick
+		pygame.joystick.init()
 
+		self.joystick = pygame.joystick.Joystick(0)
+		self.joystick.init()
 		
 
 	def getMov(self):
