@@ -42,14 +42,14 @@ class Base(gtk.Window):
 
         print "[...] Connecting to the Car [...]"
 
-        if Car().test("00:12:05:09:90:22"):
+        if Car().test("00:12:05:09:94:45"):
             print "[...]\033[92m Connection Successful \033[0m[...]"
         else:
             print "[...]\033[91m Connection Failed \033[0m [...]"
 
 
         carClass = Car()
-        carClass.connecting("00:12:05:09:90:22")
+        carClass.connecting("00:12:05:09:94:45")
 
         menu['1']=": Keyboard"
         menu['2']=": Wheel"
@@ -101,6 +101,12 @@ class Car:
 
     def moveX(self, st): self.x = st
     def moveY(self, st): self.y = st
+    def moveXY(self, xBit, yBit, spd, time):
+    	self.x = xBit
+    	self.y = yBit
+    	self.move(spd)
+    	time.sleep(time)
+
     def move(self, spd):
         arra = [[5,1,6], [3,0,4], [7,2,8]]
         ch = (16 * arra[self.y][self.x]) + spd
@@ -175,12 +181,20 @@ class Car:
         except:
             return False
 
-
-
     ##### Accelerometer #####
     def axelmeter(self, speed):
         self.progbar.set_fraction(speed/11.0)
+class PreSetFunctions:
+	def threePointTurn(self):
 
+		moveXY(1, 2, 10, 1)
+		moveXY(2, 2, 10, 1.5)
+		moveXY(0, 0, 10, 1.5)
+		moveXY(1, 0, 10, 1)
+	def rightCircle(self):
+		moveXY(2, 0, 10, 10)
+	def leftCircle(self):
+		moveXY(0, 0, 10, 10)
 
 if __name__ == "__main__":
     Base()
