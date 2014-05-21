@@ -42,14 +42,14 @@ class Base(gtk.Window):
 
 		print "[...] Connecting to the Car [...]"
 
-		if Car().test("00:12:05:09:94:45"):
+		if Car().test("00:12:05:09:91:55"):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
 
 		carClass = Car()
-		carClass.connecting("00:12:05:09:94:45")
+		carClass.connecting("00:12:05:09:91:55")
 
 		menu['1']=": Keyboard"
 		menu['2']=": Wheel"
@@ -192,7 +192,7 @@ class Car:
 		menu['1']=": Circle"
 		menu['2']=": Random*"
 		menu['3']=": Three Point Turn"
-		menu['4']=": Figure of Eigth"
+		menu['4']=": Figure of Eight"
 		menu['q']=": Quit"
 
 		while True: 
@@ -228,19 +228,19 @@ class Car:
 	def threePointTurn(self):
 		self.moveXY(1, 2, 8, .4)		# backwards
 		self.moveXY(2, 2, 8, 1.6)		# backwards, right
-		self.moveXY(0, 0, 8, 1.6)		# forward, left
-		self.moveXY(1, 0, 8, .8)		# forward
+		self.moveXY(0, 0, 8, 1.8)		# forward, left
+		self.moveXY(1, 0, 8, .5)		# forward
 		self.moveXY(1,1,0,0)
 
 	def circle(self):
-		self.moveXY(2, 0, 10, 10)	# forward right
+		self.moveXY(2, 0, 6, 16)	# forward right
 		self.moveXY(1,1,0,0)		# stop
 
 	def eigth(self):
-		self.moveXY(2, 0, 10, 4)	# forward right
-		self.moveXY(1, 0, 10, .2)	# forward
-		self.moveXY(0, 0, 10, 10)	# forward left
-		self.moveXY(1, 0, 10, .2)	# forward
+		self.moveXY(2, 0, 8, 7.2)	# forward right
+		self.moveXY(1, 0, 8, .1)	# forward
+		self.moveXY(0, 0, 8, 7.2)	# forward left
+		self.moveXY(1, 0, 8, .1)	# forward
 		self.moveXY(1,1,0,0)		# stop
 
 	##### Accelerometer #####
