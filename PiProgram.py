@@ -55,7 +55,7 @@ class Base(gtk.Window):
 		menu['2']=": Wheel"
 		menu['3']=": Xbox Controller"
 		menu['4']=": Playstation3 Controller"
-		menu['5']=": Pre-set Figures"
+		menu['p']=": Pre-set Figures"
 		menu['m']=": Change the Mac Address"
 		menu['q']=": Quit"
 
@@ -82,7 +82,7 @@ class Base(gtk.Window):
 			elif selection == '4': 
 				print '[...] Playstation3 Controller [...]'
 				carClass.controllerPs3()
-			elif selection == '5':
+			elif selection == 'p':
 				carClass.subPreMenu()
 			elif selection == 'm':
 				self.getMacAddress(True)
@@ -189,8 +189,8 @@ class Car:
 		os.system(['clear','cls'][os.name == 'nt'])
 		menu = {}
 
-		menu['1']=": Right Circle"
-		menu['2']=": Left Circle"
+		menu['1']=": Circle"
+		menu['2']=": Random*"
 		menu['3']=": Three Point Turn"
 		menu['4']=": Figure of Eigth"
 		menu['q']=": Quit"
@@ -207,11 +207,11 @@ class Car:
 			os.system(['clear','cls'][os.name == 'nt'])
 
 			if selection == '1': 
-				print '[...] Right Circle [...]'
-				self.rightCircle()
+				print '[...] Circle [...]'
+				self.circle()
 			elif selection == '2': 
-				print '[...] Left Circle [...]'
-				self.leftCircle()
+				print '[...] Random* [...]'
+				#self.leftCircle()
 			elif selection == '3': 
 				print '[...] Three Point Turn [...]'
 				self.threePointTurn()
@@ -227,21 +227,17 @@ class Car:
 
 	def threePointTurn(self):
 		self.moveXY(1, 2, 8, .4)		# backwards
-		self.moveXY(2, 2, 8, 1.6)			# backwards, right
-		self.moveXY(0, 0, 8, 1.6)			# forward, left
+		self.moveXY(2, 2, 8, 1.6)		# backwards, right
+		self.moveXY(0, 0, 8, 1.6)		# forward, left
 		self.moveXY(1, 0, 8, .8)		# forward
 		self.moveXY(1,1,0,0)
 
-	def rightCircle(self):
+	def circle(self):
 		self.moveXY(2, 0, 10, 10)	# forward right
 		self.moveXY(1,1,0,0)		# stop
 
-	def leftCircle(self):
-		self.moveXY(0, 0, 10, 10)	# forward left
-		self.moveXY(1,1,0,0)		# stop
-
 	def eigth(self):
-		self.moveXY(2, 0, 10, 4)		# forward right
+		self.moveXY(2, 0, 10, 4)	# forward right
 		self.moveXY(1, 0, 10, .2)	# forward
 		self.moveXY(0, 0, 10, 10)	# forward left
 		self.moveXY(1, 0, 10, .2)	# forward
