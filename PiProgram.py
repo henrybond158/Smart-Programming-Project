@@ -116,6 +116,7 @@ class Car:
 	speed = 8
 	maxSpeed = 15
 	minSpeed = 0
+	speedTimeStamp = time.time()
 	wheelClass = wheel.WheelClass()
 
 	#def __init__(self):
@@ -139,8 +140,14 @@ class Car:
 			self.sock.send(chr(ch))
 			self.last = ch
 	def setSpeed(self, spd):
-		if(spd >= self.maxSpeed or spd <= self.minSpeed):
-			self.speed += spd
+		tmp = self.speed + spd
+
+		if(tmp <= self.maxSpeed and tmp >= self.minSpeed):
+			currentTime = time.time()
+			if(float(currentTime - self.speedTimeStamp) >= .2):
+				self.speed =  tmp
+				self.speedTimeStamp = currentTime
+				print "New Speed: " + str(self.speed)
 
 
 	def keyboard(self):
@@ -166,7 +173,7 @@ class Car:
 			else: self.moveX(1)
 
 		# if either the plus/minus buttons are pressed, increment/decrement the speed
-			if self.pressed[K_PLUS]: self.setSpeed(1)
+			if self.pressed[K_EQUALS]: self.setSpeed(1)
 			elif self.pressed[K_MINUS]: self.setSpeed(-1)
 
 		# Will run the move function, move with set the X/Y vars and move the car accordingly
