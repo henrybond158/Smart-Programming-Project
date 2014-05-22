@@ -42,14 +42,14 @@ class Base(gtk.Window):
 
 		print "[...] Connecting to the Car [...]"
 
-		if Car().test("00:12:05:09:94:45"):
+		if Car().test("00:12:05:09:90:22"):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
 
 		carClass = Car()
-		carClass.connecting("00:12:05:09:94:45")
+		carClass.connecting("00:12:05:09:90:22")
 
 		menu['1']=": Keyboard"
 		menu['2']=": Wheel"
