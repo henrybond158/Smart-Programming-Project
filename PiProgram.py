@@ -8,13 +8,8 @@ import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
 from evdev import InputDevice, categorize, ecodes # Device Input
-<<<<<<< HEAD
-
 from lib import xbox_read # Controller Lib
-=======
-#from lib import xbox_read # Controller Lib
 import random
->>>>>>> 4d614ace4dccbcf2132a55c74d5ae06d901d7e60
 
 # =====> GUI Class
 
