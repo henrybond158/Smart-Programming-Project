@@ -5,7 +5,7 @@ from pygame.locals import *
 pygtk.require('2.0')
 import gtk
 import os
-import wheel
+import wheelFake
 import sys, select, tty, termios, bluetooth, time
 from evdev import InputDevice, categorize, ecodes # Device Input
 #from lib import xbox_read # Controller Lib
@@ -36,40 +36,30 @@ class Base(gtk.Window):
 	def selection_changed( self, w, data=None):
 		self.label.set_label( "Current selection: <b>%s</b>" % data)
 
-	def getMacAddress(self):
-		try:
-			with open("macFile","r+") as macFile:
-				mc = macFile.readline().rstrip("\n")
-				if mc.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", x.lower()):
-					return mc
-				else: return ''
-		except IOError:
-			print "[...] MAC address File doesn't seem to Exist [...]"
-			return ''
-
 	def __init__(self):
 		os.system(['clear','cls'][os.name == 'nt'])
 		menu = {}
 
-		carClass = Car()
-
 		print "[...] Connecting to the Car [...]"
 
-		if Car().test(self.getMacAddress()):
+		if Car().test("00:12:05:09:94:45"):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
-			carClass.connecting(self.getMacAddress())
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
+
+
+		carClass = Car()
+		carClass.connecting("00:12:05:09:94:45")
 
 		menu['1']=": Keyboard"
 		menu['2']=": Wheel"
 		menu['3']=": Xbox Controller"
 		menu['4']=": Playstation3 Controller"
 		menu['p']=": Pre-set Figures"
-		menu['r']=": Reconnected"
+		menu['m']=": Change the Mac Address"
 		menu['q']=": Quit"
 
-		while True: 
+		while True:
 			print "[...] Menu [...]\n"
 			options=menu.keys()
 			options.sort()
@@ -94,12 +84,8 @@ class Base(gtk.Window):
 				carClass.controllerPs3()
 			elif selection == 'p':
 				carClass.subPreMenu()
-			elif selection == 'r':
-				if Car().test(self.getMacAddress()):
-					print "[...]\033[92m Connection Successful \033[0m[...]"
-					carClass.connecting(self.getMacAddress())
-				else:
-					print "[...]\033[91m Connection Failed or Already Connected \033[0m [...]"
+			elif selection == 'm':
+				self.getMacAddress(True)
 			elif selection == 'q':
 				break
 			else: 
@@ -112,35 +98,36 @@ class Car:
 	x = 1
 	y = 1
 	last = 0
-	speed = 8
-	maxSpeed = 15
-	minSpeed = 0
-	wheelClass = wheel.WheelClass()
+	wheelClass = wheelFake.WheelClass()
 
 	#def __init__(self):
+	def mouse_click_handler(coords):
+		if pos[0] > 110 and pos[0] < 190:
+			if pos[1] >110 and pos[1] < 140:
+				print "Do cruise function"
+			if pos[1] >110 and pos[1] < 140:
+				sys.exit(0);	
+		if pos[0] > 210 and pos[0] < 290:
+			if pos[1] >110 and pos[1] < 140:
+				print "Do Random Function"
+			if pos[1] >110 and pos[1] < 140:
+				threePointTurn()
 
 
-	def moveX(self, st): 
-		if(st > -1 or st < 3):
-			self.x = st
-	def moveY(self, st): 
-		if(st > -1 or st < 3):
-			self.y = st
+	def moveX(self, st): self.x = st
+	def moveY(self, st): self.y = st
 	def moveXY(self, xBit, yBit, spd, tim):
 		self.x = xBit
 		self.y = yBit
 		self.move(spd)
 		time.sleep(tim)
+
 	def move(self, spd):
 		arra = [[5,1,6], [3,0,4], [7,2,8]]
 		ch = (16 * arra[self.y][self.x]) + spd
 		if self.last != ch:
 			self.sock.send(chr(ch))
 			self.last = ch
-	def setSpeed(self, spd):
-		if(spd >= self.maxSpeed or spd <= self.minSpeed):
-			self.speed += spd
-
 
 	def keyboard(self):
 		# loop around each key press
@@ -149,6 +136,7 @@ class Car:
 			pygame.event.pump()
 		# Sets keyboard inputs to a variable
 			self.pressed = pygame.key.get_pressed()
+			event = pygame.event.poll()
 
 		# if either the up/down button is pressed, set the Y axes to
 			if self.pressed[K_UP]: self.moveY(0)
@@ -160,14 +148,15 @@ class Car:
 			elif self.pressed[K_RIGHT]: self.moveX(2)
 			else: self.moveX(1)
 
-		# if either the plus/minus buttons are pressed, increment/decrement the speed
-			if self.pressed[K_PLUS]: self.setSpeed(1)
-			elif self.pressed[K_MINUS]: self.setSpeed(-1)
-
 		# Will run the move function, move with set the X/Y vars and move the car accordingly
-			self.move(speed)
+			self.move(8)
 		# If the escape key is pressed, exit
 			if self.pressed[K_ESCAPE]: break
+
+			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
+				mouse_click_handler(event.pos)
+
+
 	def controllerXbox(self):
 		# Will catch errors
 		try:
@@ -220,7 +209,7 @@ class Car:
 		menu['1']=": Circle"
 		menu['2']=": Random*"
 		menu['3']=": Three Point Turn"
-		menu['4']=": Figure of Eight"
+		menu['4']=": Figure of Eigth"
 		menu['q']=": Quit"
 
 		while True: 
@@ -256,24 +245,25 @@ class Car:
 	def threePointTurn(self):
 		self.moveXY(1, 2, 8, .4)		# backwards
 		self.moveXY(2, 2, 8, 1.6)		# backwards, right
-		self.moveXY(0, 0, 8, 1.8)		# forward, left
-		self.moveXY(1, 0, 8, .5)		# forward
+		self.moveXY(0, 0, 8, 1.6)		# forward, left
+		self.moveXY(1, 0, 8, .8)		# forward
 		self.moveXY(1,1,0,0)
 
 	def circle(self):
-		self.moveXY(2, 0, 6, 16)	# forward right
+		self.moveXY(2, 0, 10, 10)	# forward right
 		self.moveXY(1,1,0,0)		# stop
 
 	def eigth(self):
-		self.moveXY(2, 0, 8, 7.2)	# forward right
-		self.moveXY(1, 0, 8, .1)	# forward
-		self.moveXY(0, 0, 8, 7.2)	# forward left
-		self.moveXY(1, 0, 8, .1)	# forward
+		self.moveXY(2, 0, 10, 4)	# forward right
+		self.moveXY(1, 0, 10, .2)	# forward
+		self.moveXY(0, 0, 10, 10)	# forward left
+		self.moveXY(1, 0, 10, .2)	# forward
 		self.moveXY(1,1,0,0)		# stop
 
 	##### Accelerometer #####
 	def axelmeter(self, speed):
 		self.progbar.set_fraction(speed/11.0)
+
 
 if __name__ == "__main__":
 	Base()
