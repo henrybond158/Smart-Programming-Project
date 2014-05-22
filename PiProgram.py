@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import pygame
 from pygame.locals import *
-pygtk.require('2.0')
 import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
