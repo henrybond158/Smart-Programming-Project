@@ -59,7 +59,7 @@ class Base(gtk.Window):
 		menu['m']=": Change the Mac Address"
 		menu['q']=": Quit"
 
-		while True: 
+		while True: if event.type == pygame.QUIT:    #if user clicks the close X
 			print "[...] Menu [...]\n"
 			options=menu.keys()
 			options.sort()
@@ -101,6 +101,17 @@ class Car:
 	wheelClass = wheelFake.WheelClass()
 
 	#def __init__(self):
+	def mouse_click_handler(coords):
+		if pos[0] > 110 and pos[0] < 190:
+			if pos[1] >110 and pos[1] < 140:
+				print "Do cruise function"
+			if pos[1] >110 and pos[1] < 140:
+				sys.exit(0);	
+		if pos[0] > 210 and pos[0] < 290:
+			if pos[1] >110 and pos[1] < 140:
+				print "Do Random Function"
+			if pos[1] >110 and pos[1] < 140:
+				threePointTurn()
 
 
 	def moveX(self, st): self.x = st
@@ -253,17 +264,6 @@ class Car:
 	def axelmeter(self, speed):
 		self.progbar.set_fraction(speed/11.0)
 
-	def mouse_click_handler(coords):
-		if pos[0] > 110 and pos[0] < 190:
-			if pos[1] >110 and pos[1] < 140:
-				print "Do cruise function"
-			if pos[1] >110 and pos[1] < 140:
-				sys.exit(0);	
-		if pos[0] > 210 and pos[0] < 290:
-			if pos[1] >110 and pos[1] < 140:
-				print "Do Random Function"
-			if pos[1] >110 and pos[1] < 140:
-				threePointTurn()
 
 if __name__ == "__main__":
 	Base()
