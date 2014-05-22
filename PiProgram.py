@@ -8,7 +8,13 @@ import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
 from evdev import InputDevice, categorize, ecodes # Device Input
+<<<<<<< HEAD
 from lib import xbox_read # Controller Lib
+=======
+
+from lib import xbox_read # Controller Lib
+#from lib import xbox_read # Controller Lib
+>>>>>>> a9461ea39094abade9c933997d55d4ae6baf7c0a
 import random
 
 # =====> GUI Class
@@ -176,6 +182,7 @@ class Car:
 
 			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
 				self.mouse_click_handler(event.pos)
+
 	def controllerXbox(self):
 		# loop around xbox events
 		while True:
@@ -296,10 +303,11 @@ class Car:
 		"""
 		Spazz out for 12 seconds, making random move every 3 seconds
 		"""
-		dirX = random.choice([0,1,2])
-		dirY = random.choice([0,2]) #not using 1 as it would just turn wheels
-		speed = random.randint(5,10)
-		self.moveXY(dirX,dirY,speed,3)
+		for x in range(1,5): #running 4 times
+			dirX = random.choice([0,1,2])
+			dirY = random.choice([0,2]) #not using 1 as it would just turn wheels
+			speed = random.randint(5,10)
+			self.moveXY(dirX,dirY,speed,3)
 		
 	def cruise(self):
 		"""
