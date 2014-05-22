@@ -305,17 +305,19 @@ class Car:
 				print "Do 8 function"
 				self.eigth()
 
-			if pos[1] >160 and pos[1] < 190:
-				# sys.exit(0);	
+			if pos[1] >160 and pos[1] < 190:	
 				self.randomMoves()
-				self.cruise()
 		if pos[0] > 210 and pos[0] < 290:
 			if pos[1] >110 and pos[1] < 140:
 				print "Circle"
 				self.circle()
 			if pos[1] >160 and pos[1] < 190:
 				self.threePointTurn()
-		if pos[0]
+		if pos[0] >10 and pos[0] <90:
+			if pos[1] >110 and pos[1] < 140:
+				self.cruise()
+			if pos[1] >160 and pos[1] < 190:
+				sys.exit(0)
 
 if __name__ == "__main__":
 	Base()
