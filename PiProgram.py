@@ -1,9 +1,7 @@
 #!/usr/bin/python
-import pygtk
 import pygame
 from pygame.locals import *
 pygtk.require('2.0')
-import gtk
 import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
@@ -11,32 +9,9 @@ from evdev import InputDevice, categorize, ecodes # Device Input
 from lib import xbox_read # Controller Lib
 import random
 
-# =====> GUI Class
+# =====> Main Class
 
-class Base(gtk.Window):
-
-	def destroy(self, widget, data=None):
-		print('you closed the window')
-		gtk.main_quit()
-	def forward(self, widget, data=None):
-		print('you click the forward button')
-	def backwards(self, widget, data=None):
-		print('you clicked the back button')
-	def left(self, widget, data=None):
-		print('you clicked the left button')
-	def right(self, widget, data=None):
-		print('you clicked the right button')
-	def cruise(self, widget, data=None):
-		print("you be crusing")
-	def selection_changed(self, widget, data=None):
-		print ("keyboard selected")
-	def xboxController(self, widget, data=None):
-		print ("xbox selected")
-	def wheelController(self, widget, data=None):
-		print("wheel selected")
-	def selection_changed( self, w, data=None):
-		self.label.set_label( "Current selection: <b>%s</b>" % data)
-
+class Base():
 	def getMacAddress(self):
 		try:
 			with open("macFile","r+") as macFile:
