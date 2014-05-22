@@ -59,7 +59,7 @@ class Base(gtk.Window):
 		menu['m']=": Change the Mac Address"
 		menu['q']=": Quit"
 
-		while True: if event.type == pygame.QUIT:    #if user clicks the close X
+		while True:
 			print "[...] Menu [...]\n"
 			options=menu.keys()
 			options.sort()
