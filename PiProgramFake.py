@@ -111,7 +111,7 @@ class Car:
 			if pos[1] >110 and pos[1] < 140:
 				print "Do Random Function"
 			if pos[1] >110 and pos[1] < 140:
-				threePointTurn()
+				self.threePointTurn()
 
 
 	def moveX(self, st): self.x = st
