@@ -61,7 +61,7 @@ class Base(gtk.Window):
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
-		menu['1']=": Keyboard"
+		menu['1']=": Keyboard with GUI"
 		menu['2']=": Wheel"
 		menu['3']=": Xbox Controller"
 		menu['4']=": Playstation3 Controller"
@@ -150,6 +150,9 @@ class Car:
 		# Sets keyboard inputs to a variable
 			self.pressed = pygame.key.get_pressed()
 
+			# Get events
+			event = pygame.event.poll()
+
 		# if either the up/down button is pressed, set the Y axes to
 			if self.pressed[K_UP]: self.moveY(0)
 			elif self.pressed[K_DOWN]: self.moveY(2)
@@ -168,6 +171,9 @@ class Car:
 			self.move(self.speed)
 		# If the escape key is pressed, exit
 			if self.pressed[K_ESCAPE]: break
+
+			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
+				self.mouse_click_handler(event.pos)
 	def controllerXbox(self):
 		# Will catch errors
 		try:
@@ -274,6 +280,21 @@ class Car:
 	##### Accelerometer #####
 	def axelmeter(self, speed):
 		self.progbar.set_fraction(speed/11.0)
+
+	def mouse_click_handler(self, pos):
+		if pos[0] > 110 and pos[0] < 190:
+			if pos[1] >110 and pos[1] < 140:
+				print "Do 8 function"
+				self.eigth()
+
+			if pos[1] >160 and pos[1] < 190:
+				sys.exit(0);	
+		if pos[0] > 210 and pos[0] < 290:
+			if pos[1] >110 and pos[1] < 140:
+				print "Circle"
+				self.circle()
+			if pos[1] >160 and pos[1] < 190:
+				self.threePointTurn()
 
 if __name__ == "__main__":
 	Base()

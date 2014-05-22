@@ -51,7 +51,7 @@ class Base(gtk.Window):
 		carClass = Car()
 		carClass.connecting("00:12:05:09:91:55")
 
-		menu['1']=": Keyboard"
+		menu['1']=": Keyboard "
 		menu['2']=": Wheel"
 		menu['3']=": Xbox Controller"
 		menu['4']=": Playstation3 Controller"
