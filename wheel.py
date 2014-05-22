@@ -8,13 +8,11 @@ import time
 class WheelClass:
 	def __init__(self):
 
-
 		self.d = 0
 
-		size = [600,400]
+		self.size = [300,200]
 
-		screen = pygame.display.set_mode(size)		
-		pygame.display.set_mode((1,1))
+		screen = pygame.display.set_mode(self.size)	
 
 		pygame.joystick.init()
 
@@ -62,3 +60,9 @@ class WheelClass:
 		#print self.joystick.get_axis(4) 
 		#print self.joystick.get_axis(5) 
 		return direction, turning, speed
+
+	def launchGUI(self):
+		screen = pygame.display.set_mode(self.size)		
+		img = pygame.image.load("GUIPic.png").convert()
+		screen.blit(img, (0, 0)) #Display image at 0, 0
+		pygame.display.flip()   #Update screen
