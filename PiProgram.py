@@ -42,14 +42,20 @@ class Base():
 	def __init__(self):
 		os.system(['clear','cls'][os.name == 'nt'])
 		carClass = Car()
+		macaddr = self.getMacAddress()
+		print "[...] Connecting to the Car : " + macaddr + " [...]"
 
-		print "[...] Connecting to the Car : " + self.getMacAddress() + " [...]"
-
-		if Car().test(self.getMacAddress()):
+		if Car().test(macaddr):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
-			carClass.connecting(self.getMacAddress())
+			carClass.connecting(macaddr)
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
+			if carClass.inRange(macaddr):
+				print "[...]\033[91m Car is in range \033[0m[...]"
+			else:
+				print "[...]\033[91m Car is NOT in range \033[0m[...]"
+
+
 
 		
 
@@ -95,8 +101,7 @@ class Car:
 	minSpeed = 0
 	wheelClass = wheel.WheelClass()
 
-	#def __init__(self):
-
+	#def __init__(self):		
 
 	def moveX(self, st): 
 		if(st > -1 or st < 3):
@@ -217,6 +222,17 @@ class Car:
 			return True
 		except:
 			return False
+
+	def inRange(self, mac):
+		"""
+		Function, tests if car is in range and connected
+		"""
+		devices = bluetooth.discover_devices()
+
+		for bdaddr in devices:
+		    if mac == bdaddr:
+		        return True
+		return False
 
 	def subPreMenu(self):
 		os.system(['clear','cls'][os.name == 'nt'])
