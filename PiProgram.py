@@ -22,10 +22,25 @@ class Base():
 			print "[...] MAC address File doesn't seem to Exist [...]"
 			return ''
 
+	def mainMenu(self):
+		menu = {}
+		menu['1']=": Keyboard with GUI"
+		menu['2']=": Wheel"
+		menu['3']=": Xbox Controller"
+		menu['4']=": Playstation3 Controller"
+		menu['p']=": Pre-set Figures"
+		menu['r']=": Reconnected"
+		menu['q']=": Quit"
+
+		print "[...] Menu [...]\n"
+		options=menu.keys()
+		options.sort()
+
+		for entry in options: 
+			print "\t" + entry, menu[entry]
+
 	def __init__(self):
 		os.system(['clear','cls'][os.name == 'nt'])
-		menu = {}
-
 		carClass = Car()
 
 		print "[...] Connecting to the Car : " + self.getMacAddress() + " [...]"
@@ -36,22 +51,10 @@ class Base():
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
-		menu['1']=": Keyboard with GUI"
-		menu['2']=": Wheel"
-		menu['3']=": Xbox Controller"
-		menu['4']=": Playstation3 Controller"
-		menu['p']=": Pre-set Figures"
-		menu['r']=": Reconnected"
-		menu['q']=": Quit"
+		
 
 		while True: 
-			print "[...] Menu [...]\n"
-			options=menu.keys()
-			options.sort()
-
-			for entry in options: 
-				print "\t" + entry, menu[entry]
-
+			mainMenu()
 			selection=raw_input("\nPlease Select: ") 
 			os.system(['clear','cls'][os.name == 'nt'])
 
