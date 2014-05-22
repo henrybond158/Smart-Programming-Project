@@ -8,7 +8,8 @@ import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
 from evdev import InputDevice, categorize, ecodes # Device Input
-#from lib import xbox_read # Controller Lib
+
+from lib import xbox_read # Controller Lib
 
 # =====> GUI Class
 
@@ -134,7 +135,7 @@ class Car:
 	def move(self, spd):
 		arra = [[5,1,6], [3,0,4], [7,2,8]]
 		ch = (16 * arra[self.y][self.x]) + spd
-		if self.last != ch:
+		if self.last != ch and (ch >= 0 or ch <= 255) :
 			self.sock.send(chr(ch))
 			self.last = ch
 	def setSpeed(self, spd):
@@ -169,24 +170,37 @@ class Car:
 		# If the escape key is pressed, exit
 			if self.pressed[K_ESCAPE]: break
 	def controllerXbox(self):
-		# Will catch errors
-		try:
 		# loop around xbox events
+		while True:
+			self.speed = 0
 			for event in xbox_read.event_stream(deadzone=12000):
 
 			# if either the up/down button is pressed, set the Y axes to
-				if event.key == 'Y1' and event.value > 1: self.moveY(2)
-				elif event.key == 'Y1' and event.value < 1: self.moveY(0)
-				else: self.moveY(1)
+				if (event.key == 'RT' or event.key == 'LT'):
+					if event.key == 'RT' and event.value > 1:
+						self.speed = int(event.value)/17
+						self.moveY(0)
+					elif event.key == 'LT' and event.value > 1:
+						self.speed = int(event.value)/17
+						self.moveY(2)
+					else: self.moveY(1)
 
 			# if either the left/right button is pressed, set the X axes to
-				if event.key == 'X1' and event.value > 1: self.moveX(2)
-				elif event.key == 'X1' and event.value < 1: self.moveX(0)
-				else: self.moveX(1)
+				if(event.key == 'dl' or event.key == 'dr'):
+					if event.key == 'dl' and event.value == 1: self.moveX(0)
+					elif event.key == 'dr' and event.value == 1: self.moveX(2)
+					else: self.moveX(1)
 
-				move((int(event.value) /2200))
-		except:
-			print '[...] Error With Controller [...]'
+
+
+				#if(event.key == 'RT' or event.key == 'LT') and self.speed != int(event.value)/17:
+				#	self.speed = int(event.value)/17
+				
+				self.move(self.speed)
+
+				if(event.key == 'guide'): break
+
+
 	def controllerPs3(self):
 		print '[...] Ps3 Controller [...]'
 	def wheelHandler(self):
