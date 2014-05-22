@@ -154,7 +154,7 @@ class Car:
 			if self.pressed[K_ESCAPE]: break
 
 			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
-				mouse_click_handler(event.pos)
+				self.mouse_click_handler(event.pos)
 
 
 	def controllerXbox(self):
