@@ -190,10 +190,16 @@ class Car:
 		print '[...] Ps3 Controller [...]'
 	def wheelHandler(self):
 		while True:
+		# Starts pulling keyboard inputs from pygame
+			pygame.event.pump()
+		# Sets keyboard inputs to a variable
+			self.pressed = pygame.key.get_pressed()
+
 			direction,turning,speed=self.wheelClass.getMov()
 			self.y = direction
 			self.x = turning
 			self.move(speed)
+			if self.pressed[K_ESCAPE]: break
 
 	def connecting(self,bdr_addr):
 		try:
