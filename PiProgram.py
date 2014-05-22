@@ -144,6 +144,7 @@ class Car:
 
 	def keyboard(self):
 		# loop around each key press
+		self.wheelClass.launchGUI()
 		while True:
 		# Starts pulling keyboard inputs from pygame
 			pygame.event.pump()
