@@ -9,7 +9,7 @@ class WheelClass:
 	def __init__(self):
 		self.d = 0
 
-		size = [300,200]
+		self.size = [300,200]
 		# I made changes, notice
 
 		screen = pygame.display.set_mode(size)		
@@ -64,7 +64,7 @@ class WheelClass:
 		return direction, turning, speed
 
 	def launchGUI(self):
-		screen = pygame.display.set_mode(size)		
+		screen = pygame.display.set_mode(self.size)		
 		img = pygame.image.load("GUIPic.png").convert()
 		screen.blit(img, (0, 0)) #Display image at 0, 0
 		pygame.display.flip()   #Update screen
