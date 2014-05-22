@@ -12,7 +12,7 @@ class WheelClass:
 		self.size = [300,200]
 		# I made changes, notice
 
-		screen = pygame.display.set_mode(size)		
+		screen = pygame.display.set_mode(self.size)		
 		# img = pygame.image.load("GUIPic.png").convert()
 		# pygame.display.set_mode((1,1))
 		# screen.blit(img, (0, 0)) #Display image at 0, 0
