@@ -11,10 +11,8 @@ from evdev import InputDevice, categorize, ecodes # Device Input
 <<<<<<< HEAD
 
 from lib import xbox_read # Controller Lib
-=======
 #from lib import xbox_read # Controller Lib
 import random
->>>>>>> 4d614ace4dccbcf2132a55c74d5ae06d901d7e60
 
 # =====> GUI Class
 
@@ -181,6 +179,7 @@ class Car:
 
 			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
 				self.mouse_click_handler(event.pos)
+
 	def controllerXbox(self):
 		# loop around xbox events
 		while True:
