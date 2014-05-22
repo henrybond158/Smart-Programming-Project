@@ -283,10 +283,11 @@ class Car:
 		"""
 		Spazz out for 12 seconds, making random move every 3 seconds
 		"""
-		dirX = random.choice([0,1,2])
-		dirY = random.choice([0,2]) #not using 1 as it would just turn wheels
-		speed = random.randint(5,10)
-		self.moveXY(dirX,dirY,speed,3)
+		for x in range(1,5): #running 4 times
+			dirX = random.choice([0,1,2])
+			dirY = random.choice([0,2]) #not using 1 as it would just turn wheels
+			speed = random.randint(5,10)
+			self.moveXY(dirX,dirY,speed,3)
 		
 	def cruise(self):
 		"""
