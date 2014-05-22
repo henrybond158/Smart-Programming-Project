@@ -1,9 +1,6 @@
 #!/usr/bin/python
-import pygtk
 import pygame
 from pygame.locals import *
-pygtk.require('2.0')
-import gtk
 import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
@@ -11,32 +8,9 @@ from evdev import InputDevice, categorize, ecodes # Device Input
 from lib import xbox_read # Controller Lib
 import random
 
-# =====> GUI Class
+# =====> Main Class
 
-class Base(gtk.Window):
-
-	def destroy(self, widget, data=None):
-		print('you closed the window')
-		gtk.main_quit()
-	def forward(self, widget, data=None):
-		print('you click the forward button')
-	def backwards(self, widget, data=None):
-		print('you clicked the back button')
-	def left(self, widget, data=None):
-		print('you clicked the left button')
-	def right(self, widget, data=None):
-		print('you clicked the right button')
-	def cruise(self, widget, data=None):
-		print("you be crusing")
-	def selection_changed(self, widget, data=None):
-		print ("keyboard selected")
-	def xboxController(self, widget, data=None):
-		print ("xbox selected")
-	def wheelController(self, widget, data=None):
-		print("wheel selected")
-	def selection_changed( self, w, data=None):
-		self.label.set_label( "Current selection: <b>%s</b>" % data)
-
+class Base():
 	def getMacAddress(self):
 		try:
 			with open("macFile","r+") as macFile:
@@ -48,10 +22,25 @@ class Base(gtk.Window):
 			print "[...] MAC address File doesn't seem to Exist [...]"
 			return ''
 
+	def mainMenu(self):
+		menu = {}
+		menu['1']=": Keyboard with GUI"
+		menu['2']=": Wheel"
+		menu['3']=": Xbox Controller"
+		menu['4']=": Playstation3 Controller"
+		menu['p']=": Pre-set Figures"
+		menu['r']=": Reconnected"
+		menu['q']=": Quit"
+
+		print "[...] Menu [...]\n"
+		options=menu.keys()
+		options.sort()
+
+		for entry in options: 
+			print "\t" + entry, menu[entry]
+
 	def __init__(self):
 		os.system(['clear','cls'][os.name == 'nt'])
-		menu = {}
-
 		carClass = Car()
 
 		print "[...] Connecting to the Car : " + self.getMacAddress() + " [...]"
@@ -62,22 +51,10 @@ class Base(gtk.Window):
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
-		menu['1']=": Keyboard with GUI"
-		menu['2']=": Wheel"
-		menu['3']=": Xbox Controller"
-		menu['4']=": Playstation3 Controller"
-		menu['p']=": Pre-set Figures"
-		menu['r']=": Reconnected"
-		menu['q']=": Quit"
+		
 
 		while True: 
-			print "[...] Menu [...]\n"
-			options=menu.keys()
-			options.sort()
-
-			for entry in options: 
-				print "\t" + entry, menu[entry]
-
+			self.mainMenu()
 			selection=raw_input("\nPlease Select: ") 
 			os.system(['clear','cls'][os.name == 'nt'])
 
@@ -220,10 +197,16 @@ class Car:
 		print '[...] Ps3 Controller [...]'
 	def wheelHandler(self):
 		while True:
+		# Starts pulling keyboard inputs from pygame
+			pygame.event.pump()
+		# Sets keyboard inputs to a variable
+			self.pressed = pygame.key.get_pressed()
+
 			direction,turning,speed=self.wheelClass.getMov()
 			self.y = direction
 			self.x = turning
 			self.move(speed)
+			if self.pressed[K_ESCAPE]: break
 
 	def connecting(self,bdr_addr):
 		try:
