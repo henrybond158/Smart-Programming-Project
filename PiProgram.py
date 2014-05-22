@@ -54,7 +54,7 @@ class Base():
 		
 
 		while True: 
-			mainMenu()
+			self.mainMenu()
 			selection=raw_input("\nPlease Select: ") 
 			os.system(['clear','cls'][os.name == 'nt'])
 
