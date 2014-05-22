@@ -9,6 +9,7 @@ import wheel
 import sys, select, tty, termios, bluetooth, time, re
 from evdev import InputDevice, categorize, ecodes # Device Input
 #from lib import xbox_read # Controller Lib
+import random
 
 # =====> GUI Class
 
@@ -278,6 +279,22 @@ class Car:
 		self.moveXY(1, 0, 8, .1)	# forward
 		self.moveXY(1,1,0,0)		# stop
 
+	def randomMoves(self):
+		"""
+		Spazz out for 12 seconds, making random move every 3 seconds
+		"""
+		dirX = random.choice([0,1,2])
+		dirY = random.choice([0,2]) #not using 1 as it would just turn wheels
+		speed = random.randint(5,10)
+		self.moveXY(dirX,dirY,speed,3)
+		
+	def cruise(self):
+		"""
+		Cruising for 10 seconds
+		"""
+		self.moveXY(1,0,9,10)
+
+
 	##### Accelerometer #####
 	def axelmeter(self, speed):
 		self.progbar.set_fraction(speed/11.0)
@@ -289,13 +306,16 @@ class Car:
 				self.eigth()
 
 			if pos[1] >160 and pos[1] < 190:
-				sys.exit(0);	
+				# sys.exit(0);	
+				self.randomMoves()
+				self.cruise()
 		if pos[0] > 210 and pos[0] < 290:
 			if pos[1] >110 and pos[1] < 140:
 				print "Circle"
 				self.circle()
 			if pos[1] >160 and pos[1] < 190:
 				self.threePointTurn()
+		if pos[0]
 
 if __name__ == "__main__":
 	Base()
