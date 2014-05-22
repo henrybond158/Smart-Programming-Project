@@ -62,3 +62,5 @@ class WheelClass:
 		#print self.joystick.get_axis(4) 
 		#print self.joystick.get_axis(5) 
 		return direction, turning, speed
+
+	# def launchGUI()
