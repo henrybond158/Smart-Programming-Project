@@ -39,22 +39,24 @@ class WheelClass:
 		#sys.stdout.write("CLUTCH: ")
 		#print self.joystick.get_axis(1) 	
 		#sys.stdout.write("THROTTLE: ")
-		speed = (self.joystick.get_axis(2) + 1) / 2
-		speed = 1 - speed
+		speed = (self.joystick.get_axis(1) * -1)
+		#speed = 1 - speed
 		speed = int(speed * 15)
 		if (speed > 0):
-			direction = 0
-		else:
-			direction = 1
-		#print self.joystick.get_axis(2) 
-		rSpeed = (self.joystick.get_axis(3) + 1) / 2
-		rSpeed = 1 - rSpeed
-		rSpeed = int(rSpeed * 15)
-		if (rSpeed > 0):
 			direction = 2
-			speed = rSpeed
+		else:
+			direction = 0
+		#print self.joystick.get_axis(2) 
+		#rSpeed = 0.0 #(self.joystick.get_axis(3) + 1) / 2
+		#rSpeed = 1 - rSpeed
+		#rSpeed = int(rSpeed * 15)
+		if (direction == 0):
+			speed = (self.joystick.get_axis(1))
+			speed = int(speed * 15.1)
+			if (speed > 0):
+				direction = 1
 		#print speed
-		#print direction
+		print direction
 		#sys.stdout.write("BRAKE: ")
 		#print self.joystick.get_axis(3) 
 		#print self.joystick.get_axis(4) 
