@@ -8,7 +8,6 @@ import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
 from evdev import InputDevice, categorize, ecodes # Device Input
-<<<<<<< HEAD
 
 from lib import xbox_read # Controller Lib
 #from lib import xbox_read # Controller Lib
