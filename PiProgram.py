@@ -6,7 +6,7 @@ pygtk.require('2.0')
 import gtk
 import os
 import wheel
-import sys, select, tty, termios, bluetooth, time
+import sys, select, tty, termios, bluetooth, time, re
 from evdev import InputDevice, categorize, ecodes # Device Input
 #from lib import xbox_read # Controller Lib
 
@@ -40,7 +40,7 @@ class Base(gtk.Window):
 		try:
 			with open("macFile","r+") as macFile:
 				mc = macFile.readline().rstrip("\n")
-				if mc.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", x.lower()):
+				if re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mc.lower()):
 					return mc
 				else: return ''
 		except IOError:
@@ -53,7 +53,7 @@ class Base(gtk.Window):
 
 		carClass = Car()
 
-		print "[...] Connecting to the Car [...]"
+		print "[...] Connecting to the Car : " + self.getMacAddress() + " [...]"
 
 		if Car().test(self.getMacAddress()):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
@@ -165,7 +165,7 @@ class Car:
 			elif self.pressed[K_MINUS]: self.setSpeed(-1)
 
 		# Will run the move function, move with set the X/Y vars and move the car accordingly
-			self.move(speed)
+			self.move(self.speed)
 		# If the escape key is pressed, exit
 			if self.pressed[K_ESCAPE]: break
 	def controllerXbox(self):

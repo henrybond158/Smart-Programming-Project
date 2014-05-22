@@ -1,0 +1,34 @@
+> Functional Requirements
+default install dependancices/packages
+GUI
+???
+
+> Set Functional requirements - COMPLETE
+Uses Raspberry PI computer as controller
+Communicates through bluetooth
+Full scale movement, including forwards, backwards, left and right with the ability to stop all under system control
+Movement control linked through arrow keys
+Movement control using Xbox controller
+Automated three point turn
+
+> Set Non-Functional Requirements - COMPLETE
+The system should react in real time
+The system should be able to process vector commands, ones including both magnitude and direction
+
+System should use no more than 512mb of ram
+System should fit on allocated memory card for raspberry pi
+System operates using hardware from the raspberry PI
+
+System should be user friendly and easy to operate
+
+Error handling including messages with details of specified failure
+System should be robust
+
+System should be easy to reset
+
+> Non-Functional Requirements
+Alternative control methods (PS3 controller)
+Random movement function
+Cruise control
+Throttle linked to mousewheel control
+Circular movement funtion
