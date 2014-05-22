@@ -101,7 +101,7 @@ class Car:
 	wheelClass = wheelFake.WheelClass()
 
 	#def __init__(self):
-	def mouse_click_handler(coords):
+	def mouse_click_handler(self, coords):
 		if pos[0] > 110 and pos[0] < 190:
 			if pos[1] >110 and pos[1] < 140:
 				print "Do cruise function"
