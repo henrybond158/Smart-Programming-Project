@@ -42,16 +42,16 @@ class Base(gtk.Window):
 
 		print "[...] Connecting to the Car [...]"
 
-		if Car().test("00:12:05:09:90:22"):
+		if Car().test("00:12:05:09:91:55"):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
 
 		carClass = Car()
-		carClass.connecting("00:12:05:09:90:22")
+		carClass.connecting("00:12:05:09:91:55")
 
-		menu['1']=": Keyboard"
+		menu['1']=": Keyboard "
 		menu['2']=": Wheel"
 		menu['3']=": Xbox Controller"
 		menu['4']=": Playstation3 Controller"
@@ -101,7 +101,7 @@ class Car:
 	wheelClass = wheelFake.WheelClass()
 
 	#def __init__(self):
-	def mouse_click_handler(coords):
+	def mouse_click_handler(self, pos):
 		if pos[0] > 110 and pos[0] < 190:
 			if pos[1] >110 and pos[1] < 140:
 				print "Do cruise function"
@@ -111,7 +111,7 @@ class Car:
 			if pos[1] >110 and pos[1] < 140:
 				print "Do Random Function"
 			if pos[1] >110 and pos[1] < 140:
-				threePointTurn()
+				self.threePointTurn()
 
 
 	def moveX(self, st): self.x = st
@@ -131,6 +131,7 @@ class Car:
 
 	def keyboard(self):
 		# loop around each key press
+		self.wheelClass.launchGUI()
 		while True:
 		# Starts pulling keyboard inputs from pygame
 			pygame.event.pump()
@@ -154,7 +155,7 @@ class Car:
 			if self.pressed[K_ESCAPE]: break
 
 			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
-				mouse_click_handler(event.pos)
+				self.mouse_click_handler(event.pos)
 
 
 	def controllerXbox(self):

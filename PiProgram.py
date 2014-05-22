@@ -8,8 +8,13 @@ import os
 import wheel
 import sys, select, tty, termios, bluetooth, time, re
 from evdev import InputDevice, categorize, ecodes # Device Input
+<<<<<<< HEAD
 
 from lib import xbox_read # Controller Lib
+=======
+#from lib import xbox_read # Controller Lib
+import random
+>>>>>>> 4d614ace4dccbcf2132a55c74d5ae06d901d7e60
 
 # =====> GUI Class
 
@@ -62,7 +67,7 @@ class Base(gtk.Window):
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
 
-		menu['1']=": Keyboard"
+		menu['1']=": Keyboard with GUI"
 		menu['2']=": Wheel"
 		menu['3']=": Xbox Controller"
 		menu['4']=": Playstation3 Controller"
@@ -145,11 +150,15 @@ class Car:
 
 	def keyboard(self):
 		# loop around each key press
+		self.wheelClass.launchGUI()
 		while True:
 		# Starts pulling keyboard inputs from pygame
 			pygame.event.pump()
 		# Sets keyboard inputs to a variable
 			self.pressed = pygame.key.get_pressed()
+
+			# Get events
+			event = pygame.event.poll()
 
 		# if either the up/down button is pressed, set the Y axes to
 			if self.pressed[K_UP]: self.moveY(0)
@@ -169,6 +178,9 @@ class Car:
 			self.move(self.speed)
 		# If the escape key is pressed, exit
 			if self.pressed[K_ESCAPE]: break
+
+			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
+				self.mouse_click_handler(event.pos)
 	def controllerXbox(self):
 		# loop around xbox events
 		while True:
@@ -285,9 +297,45 @@ class Car:
 		self.moveXY(1, 0, 8, .1)	# forward
 		self.moveXY(1,1,0,0)		# stop
 
+	def randomMoves(self):
+		"""
+		Spazz out for 12 seconds, making random move every 3 seconds
+		"""
+		dirX = random.choice([0,1,2])
+		dirY = random.choice([0,2]) #not using 1 as it would just turn wheels
+		speed = random.randint(5,10)
+		self.moveXY(dirX,dirY,speed,3)
+		
+	def cruise(self):
+		"""
+		Cruising for 10 seconds
+		"""
+		self.moveXY(1,0,9,10)
+
+
 	##### Accelerometer #####
 	def axelmeter(self, speed):
 		self.progbar.set_fraction(speed/11.0)
+
+	def mouse_click_handler(self, pos):
+		if pos[0] > 110 and pos[0] < 190:
+			if pos[1] >110 and pos[1] < 140:
+				print "Do 8 function"
+				self.eigth()
+
+			if pos[1] >160 and pos[1] < 190:	
+				self.randomMoves()
+		if pos[0] > 210 and pos[0] < 290:
+			if pos[1] >110 and pos[1] < 140:
+				print "Circle"
+				self.circle()
+			if pos[1] >160 and pos[1] < 190:
+				self.threePointTurn()
+		if pos[0] >10 and pos[0] <90:
+			if pos[1] >110 and pos[1] < 140:
+				self.cruise()
+			if pos[1] >160 and pos[1] < 190:
+				sys.exit(0)
 
 if __name__ == "__main__":
 	Base()
