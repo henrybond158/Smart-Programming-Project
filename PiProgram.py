@@ -112,6 +112,9 @@ class Car:
 	x = 1
 	y = 1
 	last = 0
+	speed = 8
+	maxSpeed = 15
+	minSpeed = 0
 	wheelClass = wheel.WheelClass()
 
 	#def __init__(self):
@@ -128,13 +131,16 @@ class Car:
 		self.y = yBit
 		self.move(spd)
 		time.sleep(tim)
-
 	def move(self, spd):
 		arra = [[5,1,6], [3,0,4], [7,2,8]]
 		ch = (16 * arra[self.y][self.x]) + spd
 		if self.last != ch:
 			self.sock.send(chr(ch))
 			self.last = ch
+	def setSpeed(self, spd):
+		if(spd >= self.maxSpeed or spd <= self.minSpeed):
+			self.speed += spd
+
 
 	def keyboard(self):
 		# loop around each key press
@@ -154,8 +160,12 @@ class Car:
 			elif self.pressed[K_RIGHT]: self.moveX(2)
 			else: self.moveX(1)
 
+		# if either the plus/minus buttons are pressed, increment/decrement the speed
+			if self.pressed[K_PLUS]: self.setSpeed(1)
+			elif self.pressed[K_MINUS]: self.setSpeed(-1)
+
 		# Will run the move function, move with set the X/Y vars and move the car accordingly
-			self.move(8)
+			self.move(speed)
 		# If the escape key is pressed, exit
 			if self.pressed[K_ESCAPE]: break
 	def controllerXbox(self):
