@@ -8,14 +8,18 @@ from evdev import InputDevice, categorize, ecodes # Device Input
 from lib import xbox_read # Controller Lib
 import random
 
-# =====> Main Class
-
+# =====> Base Class
 class Base():
 	def getMacAddress(self):
+		# This function accesses a file and gets the mac address
 		try:
+			# Opens the file, only read properties
 			with open("macFile","r+") as macFile:
+				# Reads and strips mac files data 
 				mc = macFile.readline().rstrip("\n")
+				# Checks if what is in the file is a mac format
 				if re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", mc.lower()):
+					# returns the mac or nothing
 					return mc
 				else: return ''
 		except IOError:
@@ -23,6 +27,9 @@ class Base():
 			return ''
 
 	def mainMenu(self):
+		# Menu function;
+
+	# Menu options
 		menu = {}
 		menu['1']=": Keyboard with GUI"
 		menu['2']=": Wheel"
@@ -33,23 +40,33 @@ class Base():
 		menu['q']=": Quit"
 
 		print "[...] Menu [...]\n"
+
+	# Sets some menu options
 		options=menu.keys()
 		options.sort()
 
-		for entry in options: 
-			print "\t" + entry, menu[entry]
+	# Goes thought every option and prints it out line by line.
+		for entry in options: print "\t" + entry, menu[entry]
 
 	def __init__(self):
+		# This __init function is the 
+
+	# Clears the terminal
 		os.system(['clear','cls'][os.name == 'nt'])
+	# Calls the Car Class
 		carClass = Car()
+	# Gets Mac Address
 		macaddr = self.getMacAddress()
 		print "[...] Connecting to the Car : " + macaddr + " [...]"
 
+	# Tests if the car works 
 		if Car().test(macaddr):
 			print "[...]\033[92m Connection Successful \033[0m[...]"
+		# If the test function works, setup the proper connection
 			carClass.connecting(macaddr)
 		else:
 			print "[...]\033[91m Connection Failed \033[0m [...]"
+		# Tests if the car is inrange
 			if carClass.inRange(macaddr):
 				print "[...]\033[91m Car is in range \033[0m[...]"
 			else:
@@ -58,12 +75,15 @@ class Base():
 
 
 		
-
+	# Loops until it breaks
 		while True: 
 			self.mainMenu()
+		# Waits untill input
 			selection=raw_input("\nPlease Select: ") 
+		# Clears termin
 			os.system(['clear','cls'][os.name == 'nt'])
 
+		# If the input matches any of the if statements below it will run that function or code.
 			if selection == '1': 
 				print '[...] Keyboard [...]'
 				carClass.keyboard()
@@ -93,6 +113,7 @@ class Base():
 
 # =====> Car Class
 class Car:
+	# Global variables:
 	x = 1
 	y = 1
 	last = 0
@@ -102,32 +123,47 @@ class Car:
 	speedTimeStamp = time.time()
 	wheelClass = wheel.WheelClass()
 
-	#def __init__(self):		
-
 	def moveX(self, st): 
-		if(st > -1 or st < 3):
+		# Checks in the variable sent is 
+		if(st >= 0 or st <= 2):
+			# Sets X axes to the set value
 			self.x = st
 	def moveY(self, st): 
-		if(st > -1 or st < 3):
+		# Checks in the variable sent is 
+		if(st >= 0 or st <= 2):
+			# Sets X axes to the set value
 			self.y = st
 	def moveXY(self, xBit, yBit, spd, tim):
+		# Sets: X, Y, speed and time it's doing it for 
 		self.x = xBit
 		self.y = yBit
 		self.move(spd)
 		time.sleep(tim)
 	def move(self, spd):
+		# Move/drive function
+		# Array of number according to the location of 
 		arra = [[5,1,6], [3,0,4], [7,2,8]]
+	# Creates a char according to the data sent. [ (16 x direction) + speed  ]  
 		ch = (16 * arra[self.y][self.x]) + spd
+	# Error checking to make sure it's not out side of the bounds of the char variable.
 		if self.last != ch and (ch >= 0 or ch <= 255) :
+			# Send the var over bluetooth adaptor
 			self.sock.send(chr(ch))
 			self.last = ch
 	def setSpeed(self, spd):
+		# Sets the speed of the car
+		# added up a temp var for error checking
 		tmp = self.speed + spd
 
+		# Checks that its not over or under the max/min speed
 		if(tmp <= self.maxSpeed and tmp >= self.minSpeed):
+		# Gets current time
 			currentTime = time.time()
+			# Checks according of time passed so doesn't change to quickly
 			if(float(currentTime - self.speedTimeStamp) >= .2):
+				# Sets the global speed to new speed
 				self.speed =  tmp
+				# Sets new time
 				self.speedTimeStamp = currentTime
 				print "New Speed: " + str(self.speed)
 
@@ -135,6 +171,10 @@ class Car:
 	def keyboard(self):
 		# loop around each key press
 		self.wheelClass.launchGUI()
+
+		# Shows what are the different buttons.
+ 		print "\nForward: Up Arrow\nBackwards: Down Arrow\nLeft: Left Arrow\nRight: Right Arrow\n\nSpeed up: +/plus Button\nSpeed Down: -/minus Button\n\nExit: Escape Button\n\nCurrent Speed: "+str(self.speed) 
+
 		while True:
 		# Starts pulling keyboard inputs from pygame
 			pygame.event.pump()
@@ -166,6 +206,8 @@ class Car:
 			if event.type == pygame.MOUSEBUTTONDOWN: #and event.button == LEFT:
 				self.mouse_click_handler(event.pos)
 
+		os.system(['clear','cls'][os.name == 'nt'])
+
 	def controllerXbox(self):
 		# loop around xbox events
 		while True:
@@ -187,15 +229,12 @@ class Car:
 					if event.key == 'dl' and event.value == 1: self.moveX(0)
 					elif event.key == 'dr' and event.value == 1: self.moveX(2)
 					else: self.moveX(1)
-
-
-
-				#if(event.key == 'RT' or event.key == 'LT') and self.speed != int(event.value)/17:
-				#	self.speed = int(event.value)/17
 				
+				# Runs the move function
 				self.move(self.speed)
 
-				if(event.key == 'guide'): break
+				#if(event.key == 'guide'): break
+		os.system(['clear','cls'][os.name == 'nt'])
 
 
 	def controllerPs3(self):
@@ -214,12 +253,14 @@ class Car:
 			if self.pressed[K_ESCAPE]: break
 
 	def connecting(self,bdr_addr):
+		# Connects the Pi and Car
 		try:
 			self.sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 			self.sock.connect((bdr_addr, 1))
 			return sock
 		except: return ''
 	def test(self,mac):
+		# Tests the connection between the Pi and Car
 		try:
 			testSock = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
 			testSock.connect((mac, 1))
@@ -231,9 +272,7 @@ class Car:
 			return False
 
 	def inRange(self, mac):
-		"""
-		Function, tests if car is in range and connected
-		"""
+		# Function, tests if car is in range and connected
 		devices = bluetooth.discover_devices()
 
 		for bdaddr in devices:
@@ -242,20 +281,25 @@ class Car:
 		return False
 
 	def subPreMenu(self):
+		# Clears terminal
 		os.system(['clear','cls'][os.name == 'nt'])
 		menu = {}
 
+		# Sets sub menu
 		menu['1']=": Circle"
 		menu['2']=": Random*"
 		menu['3']=": Three Point Turn"
 		menu['4']=": Figure of Eight"
+		menu['5']=": Cruise"
 		menu['q']=": Quit"
 
 		while True: 
 			print "[...] Pre-defined Figures [...]\n"
+			# Sorts menu
 			options=menu.keys()
 			options.sort()
 
+			# Prints menu
 			for entry in options: 
 				print "\t" + entry, menu[entry]
 
@@ -266,14 +310,16 @@ class Car:
 				print '[...] Circle [...]'
 				self.circle()
 			elif selection == '2': 
-				print '[...] Random* [...]'
-				#self.leftCircle()
+				print '[...] Random [...]'
+				self.randomMoves()
 			elif selection == '3': 
 				print '[...] Three Point Turn [...]'
 				self.threePointTurn()
 			elif selection == '4': 
 				print '[...] Figure of Eigth [...]'
 				self.eigth()
+			elif selection == '5':
+				print '[...] Cruise [...]'
 			elif selection == 'q':
 				break
 			else: 
@@ -300,9 +346,7 @@ class Car:
 		self.moveXY(1,1,0,0)		# stop
 
 	def randomMoves(self):
-		"""
-		Spazz out for 12 seconds, making random move every 3 seconds
-		"""
+		# Spazz out for 12 seconds, making random move every 3 seconds
 		for x in range(1,5): #running 4 times
 			dirX = random.choice([0,1,2])
 			dirY = random.choice([0,2]) #not using 1 as it would just turn wheels
@@ -310,9 +354,7 @@ class Car:
 			self.moveXY(dirX,dirY,speed,3)
 		
 	def cruise(self):
-		"""
-		Cruising for 10 seconds
-		"""
+		#Cruising for 10 seconds
 		self.moveXY(1,0,9,10)
 
 
@@ -341,4 +383,5 @@ class Car:
 				sys.exit(0)
 
 if __name__ == "__main__":
+	# Start of the program
 	Base()

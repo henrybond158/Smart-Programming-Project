@@ -38,6 +38,9 @@ def event_stream(deadzone=0,scale=32768):
                     data[key] = apply_deadzone(data[key],deadzone,scale)
                 if data[key]==_data[key]: continue
                 event = Event(key,data[key],_data[key])
+
+                if (key == 'guide'): False  # Exits after guild button is pressed
+
                 yield event
             _data = data
 
