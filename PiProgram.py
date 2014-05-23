@@ -212,6 +212,8 @@ class Car:
 		# loop around xbox events
 		while True:
 			self.speed = 0
+			pygame.event.pump()
+			if self.pressed[K_ESCAPE]: break
 			for event in xbox_read.event_stream(deadzone=12000):
 
 			# if either the up/down button is pressed, set the Y axes to
